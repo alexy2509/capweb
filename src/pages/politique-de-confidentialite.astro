@@ -1,0 +1,565 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdate = '18 avril 2026';
+
+const sections = [
+  { id: 'definition',    label: 'Définition' },
+  { id: 'donnees',       label: 'Données concernées' },
+  { id: 'obligation',    label: 'Qui est concerné' },
+  { id: 'interet',       label: 'Intérêt' },
+  { id: 'rgpd',          label: 'Conformité RGPD' },
+  { id: 'exemple',       label: 'Exemple' },
+  { id: 'modele',        label: 'Modèle' },
+  { id: 'faq',           label: 'FAQ' },
+];
+
+const faq = [
+  {
+    q: 'Pendant combien de temps mes données sont-elles conservées ?',
+    a: "Les données issues du formulaire de contact sont conservées 3 ans à compter du dernier échange. Les données liées à une prestation sont conservées 10 ans pour répondre à nos obligations comptables et légales.",
+  },
+  {
+    q: 'Comment exercer mon droit d\u2019accès ou de suppression ?',
+    a: "Il suffit d\u2019envoyer un email à alexy.beauvarlet@gmail.com avec l\u2019objet « RGPD ». Nous traitons votre demande sous 30 jours maximum, sans justification requise.",
+  },
+  {
+    q: 'Utilisez-vous des cookies publicitaires ou de tracking ?',
+    a: "Non. CapWeb n\u2019utilise aucun cookie publicitaire, aucun pixel de tracking tiers ni aucun outil d\u2019analyse intrusif. Seuls des cookies techniques strictement nécessaires au fonctionnement du site peuvent être déposés.",
+  },
+  {
+    q: 'Mes données sont-elles transmises à des tiers ?',
+    a: "Non. Vos données ne sont jamais vendues, louées ou partagées à des fins commerciales. Elles peuvent uniquement être transmises à des prestataires techniques (hébergeur, messagerie) strictement nécessaires à la prestation, dans le respect du RGPD.",
+  },
+  {
+    q: 'Que se passe-t-il en cas de violation de données ?',
+    a: "En cas de faille de sécurité susceptible d\u2019affecter vos données personnelles, CapWeb notifie la CNIL sous 72h et informe directement les personnes concernées, comme l\u2019exige le RGPD.",
+  },
+  {
+    q: 'Puis-je m\u2019opposer au traitement de mes données ?',
+    a: "Oui, à tout moment et sans justification. Écrivez-nous à alexy.beauvarlet@gmail.com — votre demande sera traitée rapidement et sans conséquence sur la qualité de nos échanges.",
+  },
+];
+---
+
+<BaseLayout
+  title="Politique de confidentialité"
+  description="Politique de confidentialité de CapWeb — Transparence sur la collecte et le traitement de vos données personnelles, en conformité avec le RGPD."
+>
+  <NavBar />
+  <main>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero section-dark">
+      <div class="container page-hero__inner">
+        <p class="section-label">Vie privée</p>
+        <div class="divider"></div>
+        <h1>Politique de<br /><em class="text-accent">confidentialité</em></h1>
+        <p class="page-hero__sub">
+          Parce que vos données vous appartiennent. Voici comment CapWeb les
+          collecte, les utilise et les protège — en toute transparence.
+        </p>
+        <p class="page-hero__meta">Dernière mise à jour : {lastUpdate}</p>
+      </div>
+    </section>
+
+    <!-- ========== CONTENU ========== -->
+    <section class="section">
+      <div class="container policy-layout">
+
+        <!-- Sommaire sticky -->
+        <aside class="policy-toc" aria-label="Sommaire">
+          <p class="section-label">Sommaire</p>
+          <ul>
+            {sections.map(s => (
+              <li><a href={`#${s.id}`}>{s.label}</a></li>
+            ))}
+          </ul>
+        </aside>
+
+        <!-- Corps de la politique -->
+        <article class="policy-body">
+
+          <!-- 1. Définition -->
+          <section id="definition" class="policy-section">
+            <h2>1. Politique de confidentialité : définition</h2>
+            <p>
+              Une politique de confidentialité est un document informatif qui
+              décrit, en toute transparence, la manière dont un site internet
+              collecte, utilise, conserve et protège les données personnelles
+              de ses visiteurs.
+            </p>
+            <p>
+              Chez CapWeb, nous considérons qu\u2019une politique claire n\u2019est pas
+              une formalité administrative : c\u2019est un engagement de confiance.
+              Elle doit être lisible, honnête et facile à comprendre — pas
+              noyée dans du jargon juridique.
+            </p>
+          </section>
+
+          <!-- 2. Données concernées -->
+          <section id="donnees" class="policy-section">
+            <h2>2. Quelles données sont concernées&nbsp;?</h2>
+            <p>
+              Lorsque vous utilisez le site <strong>capweb.fr</strong>, nous
+              pouvons être amenés à collecter certaines données&nbsp;:
+            </p>
+            <ul class="policy-list">
+              <li><strong>Identité&nbsp;:</strong> nom, prénom, raison sociale (si applicable).</li>
+              <li><strong>Coordonnées&nbsp;:</strong> adresse email, numéro de téléphone.</li>
+              <li><strong>Projet&nbsp;:</strong> type de projet, budget estimé, message libre.</li>
+              <li><strong>Données techniques&nbsp;:</strong> adresse IP, type de navigateur, pages consultées (à des fins de sécurité et d\u2019analyse interne uniquement).</li>
+            </ul>
+            <p>
+              Ces données ne sont collectées que lorsque vous nous les
+              transmettez volontairement (formulaire de contact, email,
+              échange téléphonique) ou automatiquement via les logs techniques
+              de notre hébergeur.
+            </p>
+          </section>
+
+          <!-- 3. Qui est concerné -->
+          <section id="obligation" class="policy-section">
+            <h2>3. Qui est concerné par l\u2019obligation&nbsp;?</h2>
+            <p>
+              Toute entreprise, association, organisme public ou
+              entrepreneur individuel qui exploite un site internet collectant
+              des données personnelles est tenu, en France et dans l\u2019Union
+              européenne, de publier une politique de confidentialité.
+            </p>
+            <p>
+              Cette obligation découle du <strong>Règlement Général sur la
+              Protection des Données (RGPD)</strong> applicable depuis mai
+              2018, ainsi que de la <strong>loi Informatique et Libertés</strong>
+              modifiée.
+            </p>
+          </section>
+
+          <!-- 4. Intérêt -->
+          <section id="interet" class="policy-section">
+            <h2>4. Quel est l\u2019intérêt d\u2019une politique de confidentialité&nbsp;?</h2>
+            <p>
+              Rédiger et publier une politique de confidentialité répond à
+              trois objectifs essentiels&nbsp;:
+            </p>
+            <ul class="policy-list">
+              <li><strong>Conformité légale&nbsp;:</strong> satisfaire aux exigences du RGPD et éviter les sanctions (jusqu\u2019à 4&nbsp;% du chiffre d\u2019affaires annuel).</li>
+              <li><strong>Transparence&nbsp;:</strong> informer clairement les visiteurs sur le sort de leurs données.</li>
+              <li><strong>Confiance&nbsp;:</strong> renforcer la crédibilité du site et rassurer vos prospects.</li>
+            </ul>
+            <p>
+              Pour CapWeb, ce dernier point est le plus important. Un client
+              qui comprend ce que vous faites de ses données est un client qui
+              vous fait confiance — et qui reste.
+            </p>
+          </section>
+
+          <!-- 5. RGPD -->
+          <section id="rgpd" class="policy-section">
+            <h2>5. Comment nous respectons le RGPD</h2>
+            <p>
+              Le RGPD repose sur un principe simple&nbsp;: vos données vous
+              appartiennent. Voici comment CapWeb l\u2019applique au quotidien.
+            </p>
+            <h3>Base légale du traitement</h3>
+            <p>
+              Nous traitons vos données uniquement sur trois bases&nbsp;:
+              votre <strong>consentement explicite</strong> (formulaire),
+              l\u2019<strong>exécution d\u2019un contrat</strong> (prestation
+              commandée) ou une <strong>obligation légale</strong>
+              (comptabilité, facturation).
+            </p>
+            <h3>Vos droits</h3>
+            <p>Conformément aux articles 15 à 22 du RGPD, vous disposez à tout moment des droits suivants&nbsp;:</p>
+            <ul class="policy-list">
+              <li><strong>Droit d\u2019accès&nbsp;:</strong> savoir quelles données nous détenons sur vous.</li>
+              <li><strong>Droit de rectification&nbsp;:</strong> corriger une information erronée.</li>
+              <li><strong>Droit à l\u2019effacement&nbsp;:</strong> demander la suppression de vos données.</li>
+              <li><strong>Droit à la portabilité&nbsp;:</strong> récupérer vos données dans un format réutilisable.</li>
+              <li><strong>Droit d\u2019opposition&nbsp;:</strong> refuser un traitement sans avoir à vous justifier.</li>
+              <li><strong>Droit à la limitation&nbsp;:</strong> geler temporairement le traitement de vos données.</li>
+            </ul>
+            <p>
+              Pour exercer l\u2019un de ces droits, écrivez-nous à
+              <a href="mailto:alexy.beauvarlet@gmail.com">alexy.beauvarlet@gmail.com</a>.
+              Nous répondons sous 30 jours maximum.
+            </p>
+            <h3>Sécurité</h3>
+            <p>
+              Vos données sont hébergées sur des serveurs situés dans l\u2019Union
+              européenne, protégés par un chiffrement SSL/TLS, des sauvegardes
+              régulières et un contrôle d\u2019accès strict.
+            </p>
+          </section>
+
+          <!-- 6. Exemple -->
+          <section id="exemple" class="policy-section">
+            <h2>6. Un exemple concret</h2>
+            <p>
+              Vous remplissez notre formulaire de contact avec votre nom,
+              votre email et une description de votre projet. Voici ce qui se
+              passe ensuite&nbsp;:
+            </p>
+            <ol class="policy-list policy-list--numbered">
+              <li>Vos informations nous sont transmises par email sécurisé.</li>
+              <li>Nous les utilisons uniquement pour vous répondre et préparer votre devis.</li>
+              <li>Si vous devenez client, elles sont conservées 10 ans pour nos obligations comptables.</li>
+              <li>Si vous ne donnez pas suite, elles sont supprimées après 3 ans d\u2019inactivité.</li>
+              <li>À aucun moment elles ne sont revendues, partagées ou exploitées à des fins commerciales.</li>
+            </ol>
+          </section>
+
+          <!-- 7. Modèle -->
+          <section id="modele" class="policy-section">
+            <h2>7. Nos engagements en synthèse</h2>
+            <p>
+              Si vous ne deviez retenir que l\u2019essentiel, voici les cinq
+              engagements fondamentaux de CapWeb concernant vos données&nbsp;:
+            </p>
+            <div class="policy-commitments">
+              {[
+                { n: '01', t: 'Transparence totale', d: 'Vous savez toujours quelles données nous avons, pourquoi et comment.' },
+                { n: '02', t: 'Aucune revente',      d: 'Vos données ne sont jamais vendues, louées ou transmises à des tiers commerciaux.' },
+                { n: '03', t: 'Sécurité renforcée',  d: 'Chiffrement, sauvegardes et hébergement européen — sans compromis.' },
+                { n: '04', t: 'Droit de retrait',    d: 'Vous pouvez à tout moment demander la suppression totale de vos données.' },
+                { n: '05', t: 'Réactivité garantie', d: 'Toute demande RGPD est traitée sous 30 jours maximum.' },
+              ].map(c => (
+                <div class="commitment">
+                  <span class="commitment__num">{c.n}</span>
+                  <div>
+                    <h3 class="commitment__title">{c.t}</h3>
+                    <p class="commitment__text">{c.d}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <!-- 8. FAQ -->
+          <section id="faq" class="policy-section">
+            <h2>8. FAQ — Questions fréquentes</h2>
+            {faq.map(item => (
+              <details class="faq-item">
+                <summary class="faq-item__q">{item.q}</summary>
+                <p class="faq-item__a">{item.a}</p>
+              </details>
+            ))}
+          </section>
+
+          <!-- Footer note -->
+          <div class="policy-footer">
+            <p>
+              Une question sur cette politique de confidentialité&nbsp;?
+              Contactez-nous à <a href="mailto:alexy.beauvarlet@gmail.com">alexy.beauvarlet@gmail.com</a>
+              — nous répondons sous 1 semaine.
+            </p>
+          </div>
+
+        </article>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Page hero */
+  .page-hero {
+    padding: 9rem 0 var(--spacing-xl);
+  }
+
+  .page-hero__inner h1 { margin: var(--spacing-sm) 0; }
+
+  .page-hero__sub {
+    max-width: 560px;
+    color: rgba(247,244,238,0.6);
+    margin-top: var(--spacing-sm);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .page-hero__meta {
+    margin-top: var(--spacing-sm);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(247,244,238,0.35);
+  }
+
+  /* Layout : sommaire + contenu */
+  .policy-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+  }
+
+  /* Sommaire */
+  .policy-toc {
+    position: sticky;
+    top: 7rem;
+    padding: var(--spacing-md);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .policy-toc .section-label {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .policy-toc ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .policy-toc a {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
+    transition: color var(--transition), padding-left var(--transition);
+    display: block;
+    padding-left: 0;
+    border-left: 2px solid transparent;
+  }
+
+  .policy-toc a:hover {
+    color: var(--color-accent);
+    padding-left: 0.5rem;
+    border-left-color: var(--color-accent);
+  }
+
+  /* Corps */
+  .policy-body {
+    max-width: 760px;
+  }
+
+  .policy-section {
+    margin-bottom: var(--spacing-xl);
+    scroll-margin-top: 6rem;
+  }
+
+  .policy-section:last-child { margin-bottom: var(--spacing-lg); }
+
+  .policy-section h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .policy-section h3 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--spacing-md);
+    margin-bottom: 0.6rem;
+  }
+
+  .policy-section p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.85;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .policy-section p:last-child { margin-bottom: 0; }
+
+  .policy-section strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .policy-section a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 107, 44, 0.3);
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--transition);
+  }
+
+  .policy-section a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* Listes */
+  .policy-list {
+    list-style: none;
+    margin: var(--spacing-sm) 0;
+    padding-left: 0;
+    counter-reset: policy-counter;
+  }
+
+  .policy-list li {
+    position: relative;
+    padding-left: 1.8rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+  }
+
+  .policy-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    color: var(--color-accent);
+    font-size: 0.7rem;
+  }
+
+  .policy-list--numbered li::before {
+    counter-increment: policy-counter;
+    content: counter(policy-counter, decimal-leading-zero);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    top: 0.15rem;
+  }
+
+  /* Encadré coordonnées */
+  .policy-box {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+  }
+
+  .policy-box p {
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  .policy-box p:last-child { margin-bottom: 0; }
+
+  /* Engagements */
+  .policy-commitments {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+
+  .commitment {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition);
+  }
+
+  .commitment:hover { border-color: rgba(255, 107, 44, 0.4); }
+
+  .commitment__num {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    color: var(--color-accent);
+    opacity: 0.5;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+
+  .commitment__title {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.3rem;
+  }
+
+  .commitment__text {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--spacing-xs) 0;
+  }
+
+  .faq-item:first-of-type { border-top: 1px solid var(--color-border); }
+
+  .faq-item__q {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text);
+    cursor: pointer;
+    padding: 0.6rem 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color var(--transition);
+  }
+
+  .faq-item__q::-webkit-details-marker { display: none; }
+
+  .faq-item__q::after {
+    content: '+';
+    color: var(--color-accent);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+
+  details[open] .faq-item__q::after { transform: rotate(45deg); }
+
+  .faq-item__q:hover { color: var(--color-accent); }
+
+  .faq-item__a {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    padding: 0.3rem 0 0.8rem 0;
+    margin: 0;
+  }
+
+  /* Footer note */
+  .policy-footer {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+
+  .policy-footer p {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+  }
+
+  @media (max-width: 1024px) {
+    .policy-layout {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+    .policy-toc {
+      position: static;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .policy-section h2 { font-size: 1.4rem; }
+    .policy-commitments { grid-template-columns: 1fr; }
+  }
+</style>

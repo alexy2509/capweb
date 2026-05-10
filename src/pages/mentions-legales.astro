@@ -1,0 +1,452 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
+
+const lastUpdate = '18 avril 2026';
+
+const sections = [
+  { id: 'editeur',        label: 'Éditeur du site' },
+  { id: 'directeur',      label: 'Directeur de la publication' },
+  { id: 'hebergeur',      label: 'Hébergeur' },
+  { id: 'propriete',      label: 'Propriété intellectuelle' },
+  { id: 'donnees',        label: 'Données personnelles' },
+  { id: 'cookies',        label: 'Cookies' },
+  { id: 'liens',          label: 'Liens hypertextes' },
+  { id: 'responsabilite', label: 'Responsabilité' },
+  { id: 'droit',          label: 'Droit applicable' },
+  { id: 'contact',        label: 'Contact' },
+];
+---
+
+<BaseLayout
+  title="Mentions légales"
+  description="Mentions légales du site CapWeb — Informations relatives à l'éditeur, l'hébergeur, la propriété intellectuelle et les conditions d'utilisation, conformément à la LCEN."
+>
+  <NavBar />
+  <main>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero section-dark">
+      <div class="container page-hero__inner">
+        <p class="section-label">Informations légales</p>
+        <div class="divider"></div>
+        <h1>Mentions<br /><em class="text-accent">légales</em></h1>
+        <p class="page-hero__sub">
+          Informations légales relatives au site <strong>capweb.fr</strong>,
+          conformément à la loi n°&nbsp;2004-575 du 21 juin 2004 pour la
+          confiance dans l\u2019économie numérique (LCEN).
+        </p>
+        <p class="page-hero__meta">Dernière mise à jour : {lastUpdate}</p>
+      </div>
+    </section>
+
+    <!-- ========== CONTENU ========== -->
+    <section class="section">
+      <div class="container legal-layout">
+
+        <!-- Sommaire sticky -->
+        <aside class="legal-toc" aria-label="Sommaire">
+          <p class="section-label">Sommaire</p>
+          <ul>
+            {sections.map(s => (
+              <li><a href={`#${s.id}`}>{s.label}</a></li>
+            ))}
+          </ul>
+        </aside>
+
+        <!-- Corps -->
+        <article class="legal-body">
+
+          <!-- 1. Éditeur -->
+          <section id="editeur" class="legal-section">
+            <h2>1. Éditeur du site</h2>
+            <p>
+              Le site <strong>capweb.fr</strong> est édité par&nbsp;:
+            </p>
+            <div class="legal-box">
+              <p><strong>CapWeb</strong></p>
+              <p>Statut&nbsp;: <em>[À compléter — auto-entrepreneur, SASU, SARL…]</em></p>
+              <p>Siège social&nbsp;: 155P Rue de l\u2019Université, 29000 Quimper, Finistère, France</p>
+              <p>SIRET&nbsp;: <em>[À compléter — n° SIRET à 14 chiffres]</em></p>
+              <p>Numéro de TVA intracommunautaire&nbsp;: <em>[À compléter — si applicable]</em></p>
+              <p>Email&nbsp;: <a href="mailto:alexy.beauvarlet@gmail.com">alexy.beauvarlet@gmail.com</a></p>
+              <p>Téléphone&nbsp;: <a href="tel:+33781822821">+33 7 81 82 28 21</a></p>
+            </div>
+            <p class="legal-note">
+              Les mentions en italique sont à compléter avec vos informations
+              administratives définitives avant la mise en ligne officielle du site.
+            </p>
+          </section>
+
+          <!-- 2. Directeur de la publication -->
+          <section id="directeur" class="legal-section">
+            <h2>2. Directeur de la publication</h2>
+            <p>
+              Le directeur de la publication du site est&nbsp;
+              <strong>Alexy Beauvarlet</strong>,
+              en qualité de responsable légal de CapWeb.
+            </p>
+            <p>
+              Il peut être contacté à l\u2019adresse&nbsp;:
+              <a href="mailto:alexy.beauvarlet@gmail.com">alexy.beauvarlet@gmail.com</a>.
+            </p>
+          </section>
+
+          <!-- 3. Hébergeur -->
+          <section id="hebergeur" class="legal-section">
+            <h2>3. Hébergeur du site</h2>
+            <p>Le site <strong>capweb.fr</strong> est hébergé par&nbsp;:</p>
+            <div class="legal-box">
+              <p><strong>Hostinger International Ltd.</strong></p>
+              <p>Adresse&nbsp;: 61 Lordou Vironos Street, 6023 Larnaca, Chypre</p>
+              <p>Site web&nbsp;: <a href="https://www.hostinger.fr" target="_blank" rel="noopener noreferrer">www.hostinger.fr</a></p>
+              <p>Contact&nbsp;: via l\u2019assistance en ligne sur le site de l\u2019hébergeur</p>
+            </div>
+          </section>
+
+          <!-- 4. Propriété intellectuelle -->
+          <section id="propriete" class="legal-section">
+            <h2>4. Propriété intellectuelle</h2>
+            <p>
+              L\u2019ensemble du contenu présent sur le site <strong>capweb.fr</strong>
+              — textes, images, graphismes, logos, icônes, typographies,
+              vidéos, mises en page, code source — est la propriété
+              exclusive de CapWeb ou de ses partenaires, et est protégé
+              par les lois françaises et internationales relatives à la
+              propriété intellectuelle.
+            </p>
+            <p>
+              Toute reproduction, représentation, modification, publication,
+              transmission, dénaturation, totale ou partielle, du site ou
+              de son contenu, par quelque procédé que ce soit et sur quelque
+              support que ce soit, est interdite sans autorisation écrite
+              préalable de CapWeb.
+            </p>
+            <p>
+              Toute exploitation non autorisée est susceptible de constituer
+              un acte de contrefaçon au sens des articles L.335-2 et
+              suivants du Code de la propriété intellectuelle.
+            </p>
+            <h3>Marques et logos</h3>
+            <p>
+              La marque <strong>CapWeb</strong>, son logo et sa charte
+              graphique sont la propriété exclusive de CapWeb. Toute
+              utilisation non autorisée est strictement interdite.
+            </p>
+          </section>
+
+          <!-- 5. Données personnelles -->
+          <section id="donnees" class="legal-section">
+            <h2>5. Protection des données personnelles</h2>
+            <p>
+              CapWeb attache une importance particulière à la protection de
+              vos données personnelles. Les informations collectées via le
+              site sont traitées conformément au Règlement général sur la
+              protection des données (RGPD) et à la loi Informatique et
+              Libertés modifiée.
+            </p>
+            <p>
+              Pour en savoir plus sur la collecte et le traitement de vos
+              données, ainsi que sur vos droits, consultez notre
+              <a href="/politique-de-confidentialite">Politique de confidentialité</a>.
+            </p>
+          </section>
+
+          <!-- 6. Cookies -->
+          <section id="cookies" class="legal-section">
+            <h2>6. Cookies</h2>
+            <p>
+              Le site <strong>capweb.fr</strong> n\u2019utilise que des cookies
+              strictement nécessaires à son fonctionnement (session, sécurité).
+              Aucun cookie publicitaire ni aucun traceur tiers à finalité
+              marketing n\u2019est déposé sans votre consentement explicite.
+            </p>
+            <p>
+              Vous pouvez à tout moment paramétrer votre navigateur pour
+              refuser les cookies. Pour plus d\u2019informations, consultez la
+              section dédiée dans notre
+              <a href="/politique-de-confidentialite">Politique de confidentialité</a>.
+            </p>
+          </section>
+
+          <!-- 7. Liens hypertextes -->
+          <section id="liens" class="legal-section">
+            <h2>7. Liens hypertextes</h2>
+            <p>
+              Le site <strong>capweb.fr</strong> peut contenir des liens
+              hypertextes pointant vers d\u2019autres sites Internet. CapWeb
+              n\u2019exerce aucun contrôle sur ces sites externes et décline
+              toute responsabilité quant à leur contenu, leur accessibilité
+              ou leurs pratiques en matière de protection des données.
+            </p>
+            <p>
+              La création de liens vers le site capweb.fr est autorisée,
+              sous réserve qu\u2019ils ne portent pas atteinte aux intérêts de
+              CapWeb et qu\u2019ils permettent une identification claire de la
+              source. CapWeb se réserve néanmoins le droit de demander la
+              suppression d\u2019un lien jugé non conforme à sa politique éditoriale.
+            </p>
+          </section>
+
+          <!-- 8. Responsabilité -->
+          <section id="responsabilite" class="legal-section">
+            <h2>8. Limitation de responsabilité</h2>
+            <p>
+              CapWeb met tout en œuvre pour garantir l\u2019exactitude et la
+              mise à jour des informations diffusées sur son site.
+              Cependant, CapWeb ne peut garantir l\u2019exhaustivité ou
+              l\u2019absence d\u2019erreurs et ne saurait être tenu responsable des
+              éventuelles inexactitudes ou omissions.
+            </p>
+            <p>
+              L\u2019utilisateur reconnaît utiliser ces informations sous sa
+              responsabilité exclusive. CapWeb ne pourra être tenu
+              responsable des dommages directs ou indirects résultant de
+              l\u2019accès ou de l\u2019utilisation du site, y compris en cas
+              d\u2019interruption momentanée du service pour des raisons
+              techniques ou de maintenance.
+            </p>
+          </section>
+
+          <!-- 9. Droit applicable -->
+          <section id="droit" class="legal-section">
+            <h2>9. Droit applicable et juridiction</h2>
+            <p>
+              Les présentes mentions légales sont soumises au droit
+              français. En cas de litige, et après tentative de résolution
+              amiable, les tribunaux français seront seuls compétents.
+            </p>
+            <p>
+              Conformément aux dispositions des articles L.611-1 et
+              suivants du Code de la consommation, vous avez la possibilité
+              de recourir gratuitement à un médiateur de la consommation en
+              vue de la résolution amiable d\u2019un litige vous opposant à
+              CapWeb.
+            </p>
+          </section>
+
+          <!-- 10. Contact -->
+          <section id="contact" class="legal-section">
+            <h2>10. Contact</h2>
+            <p>
+              Pour toute question concernant les présentes mentions
+              légales, vous pouvez nous contacter&nbsp;:
+            </p>
+            <ul class="legal-list">
+              <li>Par email&nbsp;: <a href="mailto:alexy.beauvarlet@gmail.com">alexy.beauvarlet@gmail.com</a></li>
+              <li>Par téléphone&nbsp;: <a href="tel:+33781822821">+33 7 81 82 28 21</a></li>
+              <li>Via notre <a href="/contact">formulaire de contact</a></li>
+            </ul>
+          </section>
+
+          <div class="legal-footer">
+            <p>
+              Références légales&nbsp;: Loi n°&nbsp;2004-575 du 21 juin
+              2004 pour la confiance dans l\u2019économie numérique (LCEN) ·
+              Règlement (UE) 2016/679 du 27 avril 2016 (RGPD) · Loi
+              n°&nbsp;78-17 du 6 janvier 1978 modifiée (Informatique et
+              Libertés).
+            </p>
+          </div>
+
+        </article>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-hero { padding: 9rem 0 var(--spacing-xl); }
+  .page-hero__inner h1 { margin: var(--spacing-sm) 0; }
+  .page-hero__sub {
+    max-width: 580px;
+    color: rgba(247,244,238,0.6);
+    margin-top: var(--spacing-sm);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  .page-hero__meta {
+    margin-top: var(--spacing-sm);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(247,244,238,0.35);
+  }
+
+  .legal-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+  }
+
+  .legal-toc {
+    position: sticky;
+    top: 7rem;
+    padding: var(--spacing-md);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .legal-toc .section-label { margin-bottom: var(--spacing-sm); }
+
+  .legal-toc ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .legal-toc a {
+    font-size: 0.86rem;
+    color: var(--color-text-muted);
+    transition: color var(--transition), padding-left var(--transition);
+    display: block;
+    padding-left: 0;
+    border-left: 2px solid transparent;
+  }
+
+  .legal-toc a:hover {
+    color: var(--color-accent);
+    padding-left: 0.5rem;
+    border-left-color: var(--color-accent);
+  }
+
+  .legal-body { max-width: 760px; }
+
+  .legal-section {
+    margin-bottom: var(--spacing-xl);
+    scroll-margin-top: 6rem;
+  }
+
+  .legal-section:last-of-type { margin-bottom: var(--spacing-lg); }
+
+  .legal-section h2 {
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .legal-section h3 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-top: var(--spacing-md);
+    margin-bottom: 0.6rem;
+  }
+
+  .legal-section p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.85;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .legal-section p:last-child { margin-bottom: 0; }
+
+  .legal-section strong { color: var(--color-text); font-weight: 600; }
+
+  .legal-section em {
+    color: rgba(255, 107, 44, 0.75);
+    font-style: italic;
+    font-size: 0.9em;
+  }
+
+  .legal-section a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 107, 44, 0.3);
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--transition);
+  }
+
+  .legal-section a:hover { text-decoration-color: var(--color-accent); }
+
+  .legal-box {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) 0;
+  }
+
+  .legal-box p {
+    margin-bottom: 0.4rem;
+    font-size: 0.92rem;
+  }
+
+  .legal-box p:last-child { margin-bottom: 0; }
+
+  .legal-note {
+    font-size: 0.82rem !important;
+    color: rgba(107, 125, 116, 0.85) !important;
+    font-style: italic;
+    padding: 0.6rem var(--spacing-sm);
+    border-left: 2px solid rgba(255, 107, 44, 0.25);
+    background: rgba(255, 107, 44, 0.04);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .legal-list {
+    list-style: none;
+    margin: var(--spacing-sm) 0;
+    padding-left: 0;
+  }
+
+  .legal-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+  }
+
+  .legal-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    color: var(--color-accent);
+    font-size: 0.65rem;
+  }
+
+  .legal-footer {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .legal-footer p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  @media (max-width: 1024px) {
+    .legal-layout {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+    .legal-toc { position: static; }
+  }
+
+  @media (max-width: 768px) {
+    .legal-section h2 { font-size: 1.35rem; }
+  }
+</style>

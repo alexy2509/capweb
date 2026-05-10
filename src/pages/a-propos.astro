@@ -1,0 +1,863 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
+
+const values = [
+  {
+    icon: '❋',
+    title: 'Proximité',
+    text: "Chaque client est unique. Nous prenons le temps de comprendre votre métier, votre vision, vos contraintes — avant de taper la moindre ligne de code.",
+  },
+  {
+    icon: '◇',
+    title: 'Transparence',
+    text: "Aucune surprise, aucun jargon. Vous savez toujours où en est votre projet, combien il coûte, et ce que vous allez recevoir. Point.",
+  },
+  {
+    icon: '➤',
+    title: 'Réactivité',
+    text: "Un besoin, un doute, une modification ? Nous répondons vite. Parce qu'un site vit, respire, évolue — et nous devons avancer au rythme du vôtre.",
+  },
+  {
+    icon: '↗',
+    title: 'Ambition',
+    text: "Nous croyons aux petits projets qui deviennent grands. À chaque site livré, nous y mettons la même énergie que si c'était le nôtre.",
+  },
+];
+
+const stats = [
+  { number: '100%', label: 'Made in Bretagne' },
+  { number: '5j/7', label: 'Support inclus' },
+  { number: '1 mois', label: "D'accompagnement offert" },
+  { number: '0', label: 'Compromis' },
+];
+
+const team = [
+  {
+    name: 'Alexy B.',
+    role: 'Fondateur & Chef de projet',
+    initials: 'AB',
+    bio: "Passionné par le web depuis toujours, Alexy a lancé CapWeb avec une idée simple : créer une agence qui place la relation humaine au cœur de chaque projet. Accessible, à l'écoute, et aussi exigeant avec ses livrables qu'avec le café du matin.",
+  },
+  {
+    name: "L'équipe tech",
+    role: 'Développement & Design',
+    initials: '◆',
+    bio: "Une jeune équipe qui parle le même langage que vous : celui des résultats. Design moderne, code propre, performances au rendez-vous. On aime ce qu'on fait, et ça se voit sur l'écran.",
+  },
+  {
+    name: "L'accompagnement",
+    role: 'Support & Suivi client',
+    initials: '❤',
+    bio: "La plus belle partie du projet commence après la mise en ligne. Nous restons là, joignables, réactifs, prêts à faire évoluer votre site quand vous en avez besoin — 5 jours sur 7, avec chaque demande traitée sous 24 heures.",
+  },
+];
+
+const process = [
+  { step: '01', title: 'Premier échange', desc: "Un café virtuel (ou réel si vous êtes de passage en Bretagne). On apprend à se connaître, vous nous racontez votre projet, vos envies, vos ambitions." },
+  { step: '02', title: 'Stratégie sur-mesure', desc: "Nous construisons ensemble l'arborescence, le contenu et la direction graphique. Rien n'est jamais figé." },
+  { step: '03', title: 'Design & Maquettes', desc: "Vous voyez votre site prendre vie avant même qu'il existe. On ajuste, on peaufine, on vous écoute." },
+  { step: '04', title: 'Développement soigné', desc: "Intégration rapide, code propre, performances maximales. Vous recevez des aperçus réguliers, jamais de boîte noire." },
+  { step: '05', title: 'Mise en ligne', desc: "Le grand jour. Formation complète, remise des accès, et accompagnement dédié pour une prise en main sereine." },
+  { step: '06', title: "L'accompagnement", desc: "Et là, la vraie aventure commence. Besoin d'une modif rapide, et propre ? On s'en occupe dans les 24h. Le premier mois est offert, et on reste joignables bien au-delà. C'est ça, CapWeb." },
+];
+---
+
+<BaseLayout
+  title="À propos"
+  description="CapWeb — Jeune agence web française basée en Bretagne. Nous créons des sites sur-mesure et accompagnons nos clients dès la mise en ligne. Disponibles 5j/7, demandes traitées sous 24h et premier mois de suivi offert."
+>
+  <NavBar />
+  <main>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero section-dark">
+      <div class="container page-hero__inner">
+        <p class="section-label">Notre histoire</p>
+        <div class="divider"></div>
+        <h1>
+          Une jeune agence,<br />
+          <em class="text-accent">un grand cap à tenir.</em>
+        </h1>
+        <p class="page-hero__sub">
+          CapWeb, c'est une histoire qui commence en Bretagne. L'envie de faire différent,
+          de replacer l'humain au centre du web, et d'accompagner nos clients bien au-delà
+          de la simple mise en ligne.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== HISTOIRE ========== -->
+    <section class="section" aria-labelledby="histoire-title">
+      <div class="container story">
+        <div class="story__visual" aria-hidden="true">
+          <div class="story__image-block">
+            <img
+              src="/nouveau-logo.jpg"
+              alt="CapWeb — Logo de l'agence web"
+              class="story__image"
+              width="780"
+              height="1040"
+              loading="lazy"
+            />
+            <div class="story__image-badge">
+              <span class="story__badge-year">BZH</span>
+              <span class="story__badge-label">Made in Bretagne</span>
+            </div>
+          </div>
+        </div>
+        <div class="story__content">
+          <p class="section-label">Nos racines</p>
+          <div class="divider"></div>
+          <h2 id="histoire-title">
+            Née en Bretagne,<br />
+            <em class="text-accent">portée par l'envie.</em>
+          </h2>
+          <p>
+            CapWeb est née d'un constat simple : trop d'entreprises locales, d'artisans,
+            de commerçants et d'indépendants se retrouvent avec des sites web génériques,
+            impersonnels, livrés puis laissés pour compte. Nous avons voulu faire autrement.
+          </p>
+          <p>
+            Depuis la Bretagne, terre de caractère et de ténacité, nous avons monté une
+            agence à notre image : jeune, motivée, indépendante. Une équipe qui croit
+            que chaque projet mérite la même attention, qu'on soit un salon de coiffure
+            du coin ou une marque en pleine croissance.
+          </p>
+          <p>
+            Nos ambitions sont grandes. Nous voulons faire rayonner CapWeb bien au-delà
+            de nos frontières, sans jamais perdre ce qui fait notre force : la proximité,
+            l'exigence, et cette idée un peu romantique qu'un bon site, c'est un site
+            qui vous ressemble.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROMESSE — SECTION PHARE ========== -->
+    <section class="section promise section-alt" aria-labelledby="promise-title">
+      <div class="container">
+        <header class="section-header centered">
+          <p class="section-label">Notre engagement</p>
+          <div class="divider divider-center"></div>
+          <h2 id="promise-title">
+            Le site est livré.<br />
+            <em class="text-accent">L'aventure commence.</em>
+          </h2>
+          <p class="section-subtitle">
+            Chez nous, la mise en ligne n'est pas la fin du projet. C'est le début
+            d'une relation durable, faite de disponibilité et de réactivité.
+          </p>
+        </header>
+
+        <div class="promise-grid">
+          <div class="promise-card">
+            <div class="promise-card__icon" aria-hidden="true">◷</div>
+            <h3>Disponibles 5 jours sur 7</h3>
+            <p>
+              Du lundi au vendredi, nous sommes joignables et réactifs. Un besoin,
+              une question, une idée à creuser ? On prend le temps de vous répondre
+              comme il se doit, sans vous laisser dans le flou.
+            </p>
+          </div>
+
+          <div class="promise-card promise-card--accent">
+            <div class="promise-card__icon" aria-hidden="true">⚡</div>
+            <h3>Demandes traitées sous 24h</h3>
+            <p>
+              Un changement de prix, une nouvelle photo, un texte à corriger ?
+              Vous nous l'envoyez, et nous prenons en charge votre demande dans
+              les 24 heures. Sans frais supplémentaires pendant le premier mois.
+            </p>
+          </div>
+
+          <div class="promise-card">
+            <div class="promise-card__icon promise-card__icon--svg" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 12v9H4v-9" />
+                <rect x="2" y="7" width="20" height="5" rx="0.5" />
+                <path d="M12 21V7" />
+                <path d="M12 7c-1.5-2.5-4-4-5.5-4S4 4 4 5.5 5.5 7 7 7h5z" />
+                <path d="M12 7c1.5-2.5 4-4 5.5-4S20 4 20 5.5 18.5 7 17 7h-5z" />
+              </svg>
+            </div>
+            <h3>Un mois d'accompagnement offert</h3>
+            <p>
+              Pendant le premier mois suivant la mise en ligne, nous restons à vos côtés
+              sans surcoût. Votre site évolue avec vous, au rythme de votre activité,
+              sans que vous ayez à y penser.
+            </p>
+          </div>
+        </div>
+
+        <p class="promise-footnote">
+          <em>
+            Nous ne livrons pas un site. Nous construisons une relation.
+          </em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== STATS ========== -->
+    <section class="stats-section section-dark" aria-label="Chiffres clés">
+      <div class="container stats-grid">
+        {stats.map(s => (
+          <div class="stat-item">
+            <span class="stat-number">{s.number}</span>
+            <span class="stat-label">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ========== VALEURS ========== -->
+    <section class="section" aria-labelledby="valeurs-title">
+      <div class="container">
+        <header class="section-header centered">
+          <p class="section-label">Ce qui nous guide</p>
+          <div class="divider divider-center"></div>
+          <h2 id="valeurs-title">Nos valeurs</h2>
+          <p class="section-subtitle">
+            Quatre principes simples qui dictent chacune de nos décisions.
+          </p>
+        </header>
+        <div class="values-grid">
+          {values.map(v => (
+            <div class="value-card">
+              <div class="value-card__icon" aria-hidden="true">{v.icon}</div>
+              <h3 class="value-card__title">{v.title}</h3>
+              <p class="value-card__text">{v.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ÉQUIPE ========== -->
+    <section class="section section-alt" aria-labelledby="equipe-title">
+      <div class="container">
+        <header class="section-header centered">
+          <p class="section-label">Les visages derrière CapWeb</p>
+          <div class="divider divider-center"></div>
+          <h2 id="equipe-title">
+            Une équipe jeune,<br />
+            <em class="text-accent">passionnée, accessible.</em>
+          </h2>
+        </header>
+        <div class="team-grid">
+          {team.map(member => (
+            <div class="team-card">
+              <div class="team-card__avatar" aria-hidden="true">{member.initials}</div>
+              <h3 class="team-card__name">{member.name}</h3>
+              <p class="team-card__role">{member.role}</p>
+              <p class="team-card__bio">{member.bio}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== APPROCHE / PROCESSUS ========== -->
+    <section class="section section-dark" aria-labelledby="approche-title">
+      <div class="container">
+        <div class="approach">
+          <div class="approach__content">
+            <p class="section-label">Notre méthode</p>
+            <div class="divider"></div>
+            <h2 id="approche-title">
+              Un projet,<br />
+              <em class="text-accent">six étapes claires.</em>
+            </h2>
+            <p class="approach__intro">
+              Pas de boîte noire. Chaque étape est partagée, discutée, validée avec
+              vous. Vous n'êtes jamais spectateur — vous êtes acteur de votre projet.
+            </p>
+          </div>
+          <ol class="process-steps">
+            {process.map(item => (
+              <li class="process-step">
+                <span class="process-step__num">{item.step}</span>
+                <div>
+                  <h3 class="process-step__title">{item.title}</h3>
+                  <p class="process-step__desc">{item.desc}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TOUCHE ÉMOTIONNELLE ========== -->
+    <section class="section letter" aria-labelledby="letter-title">
+      <div class="container letter__inner">
+        <p class="section-label">Un mot de l'équipe</p>
+        <div class="divider divider-center"></div>
+        <h2 id="letter-title" class="letter__title">
+          <em class="text-accent">Derrière chaque site,</em><br />
+          une histoire humaine.
+        </h2>
+
+        <div class="letter__body">
+          <p>
+            Quand vous nous confiez votre projet, vous ne nous confiez pas seulement
+            quelques pages et un logo.
+          </p>
+          <p>
+            Vous nous confiez votre passion, vos nuits à douter, vos matins à y croire,
+            les années à construire ce que vous avez aujourd'hui entre les mains.
+          </p>
+          <p>
+            Vous nous confiez l'écho digital de ce que vous êtes.
+          </p>
+          <p class="letter__highlight">
+            <em>Nous ne l'oublions jamais.</em>
+          </p>
+          <p>
+            C'est pour cela que nous restons là — avant, pendant, et longtemps après
+            la mise en ligne. Parce qu'un site web, ce n'est pas un livrable. C'est
+            une histoire qui commence, et qu'on a envie d'écrire avec vous, page après page.
+          </p>
+          <p class="letter__signature">
+            À très vite,<br />
+            <span class="letter__signed">L'équipe CapWeb.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CTA ========== -->
+    <section class="section cta-band section-alt">
+      <div class="container cta-band__inner">
+        <div>
+          <p class="section-label">Travaillons ensemble</p>
+          <div class="divider"></div>
+          <h2>
+            Et si on commençait,<br />
+            <em class="text-accent">par un simple bonjour ?</em>
+          </h2>
+        </div>
+        <div class="cta-band__actions">
+          <a href="/contact" class="btn btn-primary">Prendre contact</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ========== PAGE HERO ========== */
+  .page-hero {
+    padding: 9rem 0 var(--spacing-xl);
+  }
+
+  .page-hero__inner h1 {
+    margin: var(--spacing-sm) 0;
+    max-width: 18ch;
+  }
+
+  .page-hero__sub {
+    max-width: 620px;
+    color: rgba(247,244,238,0.65);
+    margin-top: var(--spacing-md);
+    font-size: 1.05rem;
+    line-height: 1.9;
+  }
+
+  /* ========== STORY ========== */
+  .story {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+  }
+
+  .story__content p {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .story__image-block {
+    position: relative;
+  }
+
+  .story__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 107, 44, 0.15);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .story__image-badge {
+    position: absolute;
+    bottom: -1.2rem;
+    right: -1.2rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  .story__badge-year {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--color-accent);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .story__badge-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* ========== PROMESSE ========== */
+  .promise .section-header {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .section-subtitle {
+    max-width: 620px;
+    margin: var(--spacing-sm) auto 0;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .promise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .promise-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-md);
+    transition: transform var(--transition), box-shadow var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promise-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .promise-card--accent {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+    border-color: rgba(200,169,110,0.3);
+    color: var(--color-text-light);
+  }
+
+  .promise-card--accent h3,
+  .promise-card--accent p {
+    color: var(--color-text-light);
+  }
+
+  .promise-card--accent .promise-card__icon {
+    color: var(--color-accent);
+  }
+
+  .promise-card--accent p {
+    color: rgba(247,244,238,0.75);
+  }
+
+  .promise-card__icon {
+    font-size: 2rem;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-sm);
+    display: block;
+    line-height: 1;
+  }
+
+  .promise-card__icon--svg svg {
+    width: 2.2rem;
+    height: 2.2rem;
+    display: block;
+  }
+
+  .promise-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .promise-card p {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+  }
+
+  .promise-footnote {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+    font-size: 1.15rem;
+    color: var(--color-text);
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
+  }
+
+  .promise-footnote em {
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  /* ========== STATS ========== */
+  .stats-section {
+    padding: var(--spacing-lg) 0;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: var(--spacing-md);
+    border-right: 1px solid rgba(200,169,110,0.1);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--color-accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(247,244,238,0.5);
+  }
+
+  /* ========== VALEURS ========== */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .value-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+
+  .value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(200,169,110,0.3);
+  }
+
+  .value-card__icon {
+    font-size: 1.9rem;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .value-card__title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .value-card__text {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+  }
+
+  /* ========== TEAM ========== */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+
+  .team-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    text-align: center;
+    transition: transform var(--transition);
+  }
+
+  .team-card:hover { transform: translateY(-4px); }
+
+  .team-card__avatar {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-bg-darker);
+    margin: 0 auto var(--spacing-sm);
+    font-family: var(--font-heading);
+  }
+
+  .team-card__name {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .team-card__role {
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .team-card__bio {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.8;
+  }
+
+  /* ========== APPROACH ========== */
+  .approach {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--spacing-xl);
+    align-items: start;
+  }
+
+  .approach__intro {
+    color: rgba(247,244,238,0.6);
+    margin-top: var(--spacing-sm);
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .process-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .process-step {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid rgba(200,169,110,0.1);
+    border-radius: var(--radius-md);
+    background: rgba(255,255,255,0.02);
+    transition: border-color var(--transition), background-color var(--transition), transform var(--transition);
+  }
+
+  .process-step:hover {
+    border-color: rgba(200,169,110,0.3);
+    background: rgba(255,255,255,0.05);
+    transform: translateX(4px);
+  }
+
+  .process-step__num {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: var(--color-accent);
+    opacity: 0.5;
+    flex-shrink: 0;
+    line-height: 1.3;
+    min-width: 2.5rem;
+  }
+
+  .process-step__title {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .process-step__desc {
+    font-size: 0.9rem;
+    color: rgba(247,244,238,0.5);
+    line-height: 1.7;
+  }
+
+  /* ========== LETTRE (touche émotionnelle) ========== */
+  .letter {
+    background: var(--color-bg);
+    padding: var(--spacing-xl) 0;
+  }
+
+  .letter__inner {
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .letter__title {
+    margin: var(--spacing-sm) auto var(--spacing-lg);
+    line-height: 1.25;
+  }
+
+  .letter__body {
+    text-align: left;
+    font-size: 1.1rem;
+    line-height: 2;
+    color: var(--color-text);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .letter__body p {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .letter__highlight {
+    font-size: 1.3rem;
+    text-align: center;
+    color: var(--color-accent);
+    font-family: var(--font-heading);
+    padding: var(--spacing-sm) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: var(--spacing-md) 0 !important;
+  }
+
+  .letter__signature {
+    margin-top: var(--spacing-lg) !important;
+    text-align: right;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .letter__signed {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  /* ========== CTA BAND ========== */
+  .cta-band__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+
+  .cta-band__actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 1024px) {
+    .story { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+    .story__image-block { max-width: 480px; margin: 0 auto; }
+    .values-grid { grid-template-columns: repeat(2, 1fr); }
+    .promise-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .approach { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    /* Page hero */
+    .page-hero { padding: 7rem 0 var(--spacing-lg); }
+    .page-hero__inner h1 { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .page-hero__sub { font-size: 0.95rem; line-height: 1.75; }
+
+    /* Sections : réduire l'espacement vertical */
+    .section { padding: var(--spacing-lg) 0; }
+
+    /* Story : image + badge */
+    .story__image-badge {
+      bottom: -0.8rem;
+      right: 0.5rem;
+      padding: 0.75rem 1rem;
+    }
+    .story__badge-year { font-size: 1.5rem; }
+    .story__badge-label { font-size: 0.62rem; }
+
+    /* Grilles en 1 colonne */
+    .values-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* Stats : bordures plus douces */
+    .stats-grid { gap: var(--spacing-sm); }
+    .stat-item { padding: var(--spacing-sm); border-right: none; border-bottom: 1px solid rgba(200,169,110,0.1); }
+    .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+    .stat-number { font-size: 2.2rem; }
+
+    /* Promesse : cartes plus compactes */
+    .promise-card { padding: var(--spacing-sm) var(--spacing-sm); }
+    .promise-card h3 { font-size: 1.15rem; }
+
+    /* Valeurs, team : padding réduit */
+    .value-card, .team-card { padding: var(--spacing-sm); }
+
+    /* Process */
+    .process-step { padding: var(--spacing-sm); gap: 0.75rem; }
+    .process-step__num { font-size: 1.3rem; min-width: 2rem; }
+
+    /* Lettre */
+    .letter { padding: var(--spacing-lg) 0; }
+    .letter__body { font-size: 0.98rem; line-height: 1.85; }
+    .letter__highlight { font-size: 1.05rem; padding: var(--spacing-xs) 0; }
+    .letter__signed { font-size: 1.1rem; }
+
+    /* CTA band */
+    .cta-band__inner { flex-direction: column; align-items: flex-start; }
+    .cta-band__actions { width: 100%; }
+    .cta-band__actions .btn { width: 100%; justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .page-hero__inner h1 { font-size: 1.9rem; }
+    .promise-card__icon { font-size: 1.6rem; }
+    .promise-card__icon--svg svg { width: 1.8rem; height: 1.8rem; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-item { border-bottom: 1px solid rgba(200,169,110,0.1); }
+    .stat-item:last-child { border-bottom: none; }
+  }
+</style>

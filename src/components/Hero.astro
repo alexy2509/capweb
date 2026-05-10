@@ -1,0 +1,201 @@
+---
+// Pas de props — contenu fixe pour la landing page
+---
+
+<section class="hero" aria-label="Introduction">
+  <div class="hero__bg" aria-hidden="true"></div>
+
+  <div class="container hero__content">
+    <p class="section-label hero__label">Agence web premium · France</p>
+    <h1 class="hero__title">
+      Votre présence en ligne,<br />
+      <em class="hero__title-accent">sublimée.</em>
+    </h1>
+    <p class="hero__subtitle">
+      Nous créons des sites web sur-mesure qui captivent vos visiteurs,
+      renforcent votre crédibilité et transforment vos prospects en clients.
+    </p>
+    <div class="hero__cta">
+      <a href="/contact" class="btn btn-primary">Demander un devis gratuit</a>
+    </div>
+  </div>
+
+  <div class="hero__stats" aria-label="Nos engagements">
+    <div class="container hero__stats-inner">
+      <div class="hero__stat">
+        <span class="hero__stat-number">Satisfait</span>
+        <span class="hero__stat-label">Ou Ajusté</span>
+      </div>
+      <div class="hero__stat">
+        <span class="hero__stat-number">Made in</span>
+        <span class="hero__stat-label">France</span>
+      </div>
+      <div class="hero__stat">
+        <span class="hero__stat-number">48h</span>
+        <span class="hero__stat-label">de délai de réponse</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--color-bg-dark);
+    overflow: hidden;
+  }
+
+  /* Fond décoratif — dégradés chauds + grille subtile */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 12% 40%, rgba(255, 107, 44, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 65% 65% at 88% 70%, rgba(255, 46, 126, 0.15) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 50% at 50% 100%, rgba(255, 179, 71, 0.10) 0%, transparent 65%);
+  }
+
+  .hero__bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 107, 44, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 107, 44, 0.04) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, transparent 70%);
+  }
+
+  /* Orbes décoratives flottantes */
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: 8%;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: var(--gradient-warm);
+    filter: blur(80px);
+    opacity: 0.45;
+    animation: orbFloat 8s ease-in-out infinite;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-30px, 20px) scale(1.1); }
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-top: 9rem;
+    padding-bottom: 5rem;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero__label {
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+
+  .hero__title {
+    color: var(--color-text-light);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--spacing-md);
+    max-width: 800px;
+  }
+
+  .hero__title-accent {
+    background: var(--gradient-warm);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-style: italic;
+    font-weight: 400;
+    animation: gradientShift 6s ease infinite;
+  }
+
+  .hero__subtitle {
+    color: rgba(255, 248, 242, 0.72);
+    font-size: 1.05rem;
+    font-weight: 300;
+    margin-bottom: var(--spacing-lg);
+    max-width: 580px;
+    line-height: 1.85;
+  }
+
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    align-items: center;
+  }
+
+  /* Barre de stats */
+  .hero__stats {
+    position: relative;
+    z-index: 1;
+    background: rgba(14, 6, 4, 0.55);
+    border-top: 1px solid rgba(255, 107, 44, 0.2);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 1.75rem 0;
+  }
+
+  .hero__stats-inner {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: var(--spacing-lg);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero__stat {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0 var(--spacing-sm);
+    border-right: 1px solid rgba(255, 107, 44, 0.2);
+  }
+
+  .hero__stat:last-child { border-right: none; }
+
+  .hero__stat-number,
+  .hero__stat-label {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 400;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  @media (max-width: 768px) {
+    .hero__content { padding-top: 7rem; padding-bottom: 3rem; }
+    .hero__stats-inner { grid-template-columns: 1fr; row-gap: var(--spacing-sm); }
+    .hero__stat {
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 107, 44, 0.15);
+      padding-bottom: var(--spacing-sm);
+    }
+    .hero__stat:last-child { border-bottom: none; padding-bottom: 0; }
+    .hero__cta { flex-direction: column; align-items: flex-start; }
+  }
+</style>

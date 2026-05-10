@@ -1,0 +1,441 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    id: 'vitrine',
+    number: '01',
+    label: 'Site vitrine',
+    title: 'Votre carte de visite',
+    titleAccent: 'digitale parfaite',
+    description: "Un site vitrine bien conçu est votre meilleur commercial. Il travaille pour vous 24h/24, rassure vos prospects et les pousse à vous contacter. Du site simple à la vitrine la plus avancée — nous adaptons tout à votre ambition.",
+    features: [
+      'De 1 à 15 pages selon vos besoins (accueil, services, réalisations, témoignages, contact, blog…)',
+      'Design unique adapté à votre identité visuelle',
+      'Architecture sur-mesure du site simple à la vitrine premium',
+      'Responsive mobile-first, compatible tous navigateurs',
+      'SEO local intégré (ville, département)',
+      'Google Business Profile configuré et optimisé',
+      'Avis clients intégrés directement sur le site',
+      'Galerie photos de chantiers, créations ou réalisations',
+      'Formulaire de contact ou de devis avec champs métier',
+      'Blog / actualités pour le SEO long terme',
+      'Page dédiée par prestation avec CTA personnalisés',
+      'Prise de RDV en ligne (selon votre métier)',
+      "Formation à l'administration de votre site incluse",
+      'Performance et chargement optimisés',
+    ],
+  },
+  {
+    id: 'ecommerce',
+    number: '02',
+    label: 'E-commerce',
+    title: 'Vendez en ligne,',
+    titleAccent: 'sans limite',
+    description: "Une boutique en ligne qui donne envie d'acheter. Interface intuitive, processus de commande fluide, paiement sécurisé et outils de gestion puissants — pour que vous puissiez vous concentrer sur votre cœur de métier.",
+    features: [
+      'Boutique en ligne adaptée à votre catalogue (jusqu\'à 50 produits)',
+      'Base WooCommerce ou Shopify selon vos besoins',
+      'Paiement sécurisé (Stripe, PayPal, Apple Pay, virement)',
+      'Fiches produits optimisées SEO',
+      'Catalogue structuré avec filtres, catégories et recherche',
+      'Modes de livraison multiples (Colissimo, Mondial Relay, click & collect)',
+      'Code promo, panier abandonné, relances automatiques',
+      'Programme de fidélité client',
+      'Emails transactionnels personnalisés (confirmation, expédition, retour)',
+      'Tunnel de commande optimisé pour la conversion',
+      'Tableau de bord ventes & statistiques en temps réel',
+      'Formation back-office complète incluse',
+      'Responsive mobile-first et tactile',
+      'Sécurité et conformité RGPD assurées',
+    ],
+  },
+  {
+    id: 'refonte',
+    number: '03',
+    label: 'Refonte',
+    title: 'Modernisez votre site,',
+    titleAccent: 'boostez vos résultats',
+    description: "Votre site actuel vous freine ? Trop lent, pas adapté au mobile, design vieilli ? Nous analysons l'existant, conservons ce qui fonctionne et transformons le reste pour un site moderne, performant et orienté conversion.",
+    features: [
+      'Audit complet de votre site actuel (performance, SEO, UX)',
+      'Rafraîchissement design ou refonte complète selon vos besoins',
+      'Nouveau design sur-mesure conservant votre ADN de marque',
+      'Nouvelle arborescence repensée pour la conversion',
+      'Migration intégrale du contenu existant',
+      'Optimisation des performances (vitesse, score Lighthouse)',
+      'Refonte e-commerce avec migration produits + historique commandes',
+      'Nouvelles polices, nouvelles couleurs, nouvelles photos',
+      'Conservation des liens entrants et préservation du référencement',
+      'Tests de compatibilité multi-navigateurs et multi-appareils',
+    ],
+  },
+  {
+    id: 'seo',
+    number: '04',
+    label: 'Référencement SEO',
+    title: 'Première page Google,',
+    titleAccent: 'clients garantis',
+    description: "Le meilleur site web ne vaut rien s'il est invisible. Notre stratégie SEO combine optimisation technique, contenu de qualité et netlinking pour vous positionner durablement sur vos mots-clés stratégiques.",
+    features: [
+      'Audit SEO complet de votre site (technique, contenu, popularité)',
+      'Stratégie de mots-clés sur-mesure adaptée à votre activité',
+      'Gestion complète de votre Google Business Profile',
+      'Suivi des positions sur vos mots-clés stratégiques',
+      'Suivi des positions locales (ville, département, région)',
+      'Optimisations techniques continues (vitesse, balises, structure)',
+      'Création de contenus optimisés (articles de blog mensuels)',
+      'Netlinking et acquisition de backlinks de qualité',
+      'Optimisation des fiches Google Business (photos, posts, avis)',
+      'Suivi de la concurrence et veille permanente',
+      'Rapports mensuels détaillés avec recommandations',
+      "Point téléphonique mensuel d'analyse et d'ajustement",
+      'Optimisation Core Web Vitals (signaux Google)',
+      'Stratégie de contenu long terme pour positions durables',
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Services"
+  description="Découvrez l'intégralité des services CapWeb : sites vitrine, e-commerce, refonte et référencement SEO. Des solutions web complètes adaptées à votre ambition."
+>
+  <NavBar />
+  <main>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero section-dark">
+      <div class="container page-hero__inner">
+        <p class="section-label">Nos services</p>
+        <div class="divider"></div>
+        <h1>Des solutions web<br /><em class="text-accent">à la hauteur de vos ambitions</em></h1>
+        <p class="page-hero__sub">
+          Quatre univers d'expertise pour donner vie à votre projet web.
+          Des sites vitrine sur-mesure aux boutiques en ligne, en passant par les refontes
+          et le référencement — tout ce dont vous avez besoin, sous un seul toit.
+        </p>
+        <nav class="page-hero__anchors" aria-label="Navigation des services">
+          {services.map(s => (
+            <a href={`#${s.id}`} class="page-hero__anchor">
+              <span class="page-hero__anchor-num">{s.number}</span>
+              <span>{s.label}</span>
+            </a>
+          ))}
+        </nav>
+      </div>
+    </section>
+
+    <!-- ========== SERVICES SECTIONS ========== -->
+    {services.map((service, idx) => (
+      <section
+        class={`section service-section ${idx % 2 === 1 ? 'section-alt' : ''}`}
+        id={service.id}
+        aria-labelledby={`${service.id}-title`}
+      >
+        <div class="container">
+          <div class={`service ${idx % 2 === 1 ? 'service--reverse' : ''}`}>
+            <div class="service__content">
+              <p class="section-label">{service.number} · {service.label}</p>
+              <div class="divider"></div>
+              <h2 id={`${service.id}-title`}>
+                {service.title}<br /><em class="text-accent">{service.titleAccent}</em>
+              </h2>
+              <p class="service__desc">{service.description}</p>
+              <ul class="service__list">
+                {service.features.map(f => (
+                  <li>
+                    <span class="service__check" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M2 7L5.5 10.5L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href={`/contact?service=${service.id}`} class="btn btn-primary">Demander un devis</a>
+            </div>
+            <div class="service__visual" aria-hidden="true">
+              <div class="service__visual-card">
+                <div class="service__visual-inner">
+                  <span class="service__visual-num">{service.number}</span>
+                  <span class="service__visual-label">{service.label}</span>
+                </div>
+                <div class="service__visual-shape service__visual-shape--1"></div>
+                <div class="service__visual-shape service__visual-shape--2"></div>
+                <div class="service__visual-shape service__visual-shape--3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <!-- ========== CTA FINAL ========== -->
+    <section class="section cta-band section-dark">
+      <div class="container cta-band__inner">
+        <div>
+          <p class="section-label">Passez à l'action</p>
+          <div class="divider"></div>
+          <h2>Un projet en tête&nbsp;?<br /><em class="text-accent">Parlons-en.</em></h2>
+          <p class="cta-band__sub">
+            Premier rendez-vous gratuit, sans engagement, chez vous ou en visio.
+            Devis personnalisé sous 48h.
+          </p>
+        </div>
+        <div class="cta-band__actions">
+          <a href="/contact" class="btn btn-primary">Demander un devis</a>
+          <a href="tel:+33781822821" class="btn btn-outline-light">Nous appeler</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* ---------- Page hero ---------- */
+  .page-hero {
+    padding: 9rem 0 var(--spacing-xl);
+  }
+
+  .page-hero__inner h1 { margin: var(--spacing-sm) 0; }
+
+  .page-hero__sub {
+    max-width: 620px;
+    color: rgba(255, 248, 242, 0.7);
+    margin-top: var(--spacing-sm);
+    font-size: 1.05rem;
+    line-height: 1.85;
+  }
+
+  .page-hero__anchors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: var(--spacing-lg);
+  }
+
+  .page-hero__anchor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-xl);
+    background: rgba(255, 248, 242, 0.05);
+    border: 1px solid rgba(255, 107, 44, 0.25);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 248, 242, 0.85);
+    transition: all var(--transition);
+  }
+
+  .page-hero__anchor:hover {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    color: var(--color-text-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .page-hero__anchor-num {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 0.95rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: -webkit-text-fill-color var(--transition);
+  }
+
+  .page-hero__anchor:hover .page-hero__anchor-num {
+    -webkit-text-fill-color: var(--color-text-light);
+    background: none;
+  }
+
+  /* ---------- Service section ---------- */
+  .service-section {
+    scroll-margin-top: 5rem;
+  }
+
+  .service {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+  }
+
+  .service--reverse { direction: rtl; }
+  .service--reverse > * { direction: ltr; }
+
+  .service__content .section-label {
+    font-size: 0.95rem;
+  }
+
+  .service__content h2 {
+    margin-top: 0.6rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .service__desc {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-md);
+    font-size: 1rem;
+    line-height: 1.85;
+    max-width: 540px;
+  }
+
+  .service__list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .service__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    font-size: 0.92rem;
+    color: var(--color-text);
+    line-height: 1.55;
+  }
+
+  .service__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: var(--color-text-light);
+    margin-top: 2px;
+    box-shadow: 0 4px 12px rgba(255, 78, 80, 0.25);
+  }
+
+  /* ---------- Service visual (carte décorative dégradée) ---------- */
+  .service__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4/5;
+    max-width: 460px;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .service__visual-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-lg);
+    background: var(--gradient-warm);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: flex-end;
+    padding: var(--spacing-md);
+  }
+
+  .service__visual-inner {
+    position: relative;
+    z-index: 2;
+    color: var(--color-text-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .service__visual-num {
+    font-family: var(--font-heading);
+    font-size: clamp(4rem, 9vw, 6.5rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .service__visual-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .service__visual-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 248, 242, 0.18);
+    filter: blur(0.5px);
+  }
+
+  .service__visual-shape--1 {
+    width: 60%;
+    aspect-ratio: 1;
+    top: -15%;
+    right: -15%;
+    background: radial-gradient(circle, rgba(255,248,242,0.35) 0%, transparent 70%);
+  }
+
+  .service__visual-shape--2 {
+    width: 40%;
+    aspect-ratio: 1;
+    top: 30%;
+    left: -10%;
+    background: radial-gradient(circle, rgba(255,46,126,0.5) 0%, transparent 70%);
+  }
+
+  .service__visual-shape--3 {
+    width: 35%;
+    aspect-ratio: 1;
+    bottom: -10%;
+    right: 25%;
+    background: radial-gradient(circle, rgba(255,179,71,0.4) 0%, transparent 70%);
+  }
+
+  /* ---------- CTA band ---------- */
+  .cta-band__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+  }
+
+  .cta-band__sub {
+    color: rgba(255, 248, 242, 0.65);
+    margin-top: var(--spacing-sm);
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 480px;
+  }
+
+  .cta-band__actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1024px) {
+    .service { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+    .service--reverse { direction: ltr; }
+    .service__visual { max-width: 360px; aspect-ratio: 16/10; }
+    .cta-band__inner { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 768px) {
+    .page-hero__anchors { gap: 0.5rem; }
+    .page-hero__anchor { padding: 0.55rem 1rem; font-size: 0.78rem; }
+    .service__visual { max-width: 100%; aspect-ratio: 4/3; }
+  }
+</style>

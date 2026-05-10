@@ -1,0 +1,202 @@
+---
+const currentYear = new Date().getFullYear();
+
+const links = {
+  pages: [
+    { href: '/',          label: 'Accueil'   },
+    { href: '/services',  label: 'Services'  },
+    { href: '/a-propos',  label: 'À propos'  },
+    { href: '/contact',   label: 'Contact'   },
+  ],
+  services: [
+    { href: '/services#vitrine',   label: 'Site vitrine'  },
+    { href: '/services#ecommerce', label: 'E-commerce'    },
+    { href: '/services#refonte',   label: 'Refonte'       },
+    { href: '/services#seo',       label: 'Référencement' },
+  ],
+};
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="/" aria-label="CapWeb">
+        <img src="/logo.png" alt="CapWeb" width="260" height="45" class="footer__logo" />
+      </a>
+      <p class="footer__tagline">
+        Votre présence en ligne,<br /><em>sublimée.</em>
+      </p>
+      <address class="footer__contact">
+        <a href="mailto:alexy.beauvarlet@gmail.com">alexy.beauvarlet@gmail.com</a><br />
+        <a href="tel:+33781822821">+33 7 81 82 28 21</a><br />
+        <a href="https://www.instagram.com/capwebbuild?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram · @capwebbuild</a>
+      </address>
+    </div>
+
+    <nav class="footer__nav" aria-label="Navigation footer">
+      <div class="footer__col">
+        <h3 class="footer__col-title">Pages</h3>
+        <ul>
+          {links.pages.map(l => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__col-title">Services</h3>
+        <ul>
+          {links.services.map(l => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="footer__cta-block">
+      <p class="footer__cta-text">
+        Prêt à démarrer votre projet ?
+      </p>
+      <a href="/contact" class="btn btn-primary">Demander un devis</a>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>&copy; {currentYear} CapWeb — Tous droits réservés</p>
+      <p>
+        <a href="/mentions-legales">Mentions légales</a>
+        &nbsp;·&nbsp;
+        <a href="/politique-de-confidentialite">Politique de confidentialité</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background-color: var(--color-bg-darker);
+    color: var(--color-text-light);
+    padding-top: var(--spacing-xl);
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-border-dark);
+  }
+
+  .footer__logo {
+    height: 32px;
+    width: auto;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .footer__tagline {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: rgba(255, 248, 242, 0.65);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.4;
+  }
+
+  .footer__tagline em {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
+
+  .footer__contact {
+    font-style: normal;
+    font-size: 0.9rem;
+    color: rgba(255, 248, 242, 0.55);
+    line-height: 1.9;
+  }
+
+  .footer__contact a {
+    transition: color var(--transition);
+  }
+
+  .footer__contact a:hover { color: var(--color-primary-light); }
+
+  .footer__nav {
+    display: contents;
+  }
+
+  .footer__col-title {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .footer__col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer__col a {
+    font-size: 0.9rem;
+    color: rgba(255, 248, 242, 0.6);
+    transition: color var(--transition);
+  }
+
+  .footer__col a:hover { color: var(--color-primary-light); }
+
+  .footer__cta-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .footer__cta-text {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 1.3;
+    color: rgba(255, 248, 242, 0.85);
+  }
+
+  .footer__bottom {
+    padding: 1.25rem 0;
+  }
+
+  .footer__bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: rgba(255, 248, 242, 0.35);
+  }
+
+  .footer__bottom a {
+    color: rgba(255, 248, 242, 0.45);
+    transition: color var(--transition);
+  }
+
+  .footer__bottom a:hover { color: var(--color-primary-light); }
+
+  @media (max-width: 1024px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer__brand { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 768px) {
+    .footer__inner { grid-template-columns: 1fr; }
+    .footer__bottom-inner {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+  }
+</style>

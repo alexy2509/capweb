@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Hero from '../components/Hero.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+// import Testimonial from '../components/Testimonial.astro'; // Réactiver quand témoignages disponibles
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    icon: '◈',
+    title: 'Site vitrine',
+    description: 'Un site élégant et performant qui reflète votre identité et convainc vos prospects dès la première visite.',
+    features: ['Design sur-mesure', 'Optimisé SEO', 'Mobile-first', 'Formation incluse'],
+    href: '/services#vitrine',
+  },
+  {
+    icon: '◉',
+    title: 'E-commerce',
+    description: 'Une boutique en ligne performante, intuitive et sécurisée pour développer vos ventes 24h/24.',
+    features: ['Panier & paiement sécurisé', 'Gestion des stocks', 'Fiches produits optimisées', 'Formation back-office'],
+    href: '/services#ecommerce',
+    featured: true,
+  },
+  {
+    icon: '◌',
+    title: 'Refonte',
+    description: 'Donnez un nouveau souffle à votre site existant — design moderne, vitesse améliorée, résultats mesurables.',
+    features: ['Audit complet', 'Nouveau design', 'Migration de contenu', 'Redirections SEO'],
+    href: '/services#refonte',
+  },
+  {
+    icon: '◎',
+    title: 'Référencement',
+    description: 'Apparaissez en première page de Google et attirez un trafic qualifié grâce à nos stratégies SEO éprouvées.',
+    features: ['Google Business Profile', 'Suivi des positions locales', 'Rapport mensuel', 'Stratégie sur-mesure'],
+    href: '/services#seo',
+  },
+];
+
+// Témoignages désactivés temporairement — à réactiver quand CapWeb aura ses premiers clients
+/*
+const testimonials = [
+  {
+    quote: 'Je voulais un site pour mettre en avant mes prestations de nettoyage automobile et permettre la prise de rendez-vous en ligne. Le résultat est bluffant : design pro, formulaire fluide, et mon téléphone sonne beaucoup plus qu\'avant.',
+    author: 'Tom N.',
+    role: 'Gérant',
+    company: 'Nettoyage automobile',
+  },
+  {
+    quote: 'Mon univers artisanal méritait une vitrine à la hauteur de mes créations en bois et résine. CapWeb a su capter mon identité et la retranscrire avec goût. Le rendu est chaleureux, élégant, et mes pièces sont enfin mises en valeur.',
+    author: 'Valérie B.',
+    role: 'Artisane créatrice',
+    company: 'Bois & Résine',
+  },
+  {
+    quote: 'En tant que coiffeur indépendant, je cherchais un site moderne qui me ressemble et qui permette à mes clients de réserver facilement. Mission accomplie : simple, rapide, et mes créneaux se remplissent tout seuls.',
+    author: 'Mathéo J.',
+    role: 'Coiffeur indépendant',
+    company: 'Studio coiffure',
+  },
+];
+*/
+---
+
+<BaseLayout
+  title="Accueil"
+  description="CapWeb — Agence web premium. Nous créons des sites vitrine, e-commerce et applications web sur-mesure qui convertissent vos visiteurs en clients."
+>
+  <NavBar />
+  <main>
+
+    <!-- ========== HERO ========== -->
+    <Hero />
+
+    <!-- ========== SERVICES ========== -->
+    <section class="section section-alt" id="services" aria-labelledby="services-title">
+      <div class="container">
+        <header class="section-header centered">
+          <p class="section-label">Ce que nous faisons</p>
+          <div class="divider divider-center"></div>
+          <h2 id="services-title">Nos offres</h2>
+          <p class="section-subtitle">
+            Des solutions web adaptées à chaque ambition, conçues pour performer.
+          </p>
+        </header>
+        <div class="grid-4">
+          {services.map(s => <ServiceCard {...s} />)}
+        </div>
+        <div class="services-cta">
+          <a href="/services" class="btn btn-outline">Voir toutes nos offres</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== POURQUOI CAPWEB ========== -->
+    <section class="section section-dark" aria-labelledby="why-title">
+      <div class="container">
+        <header class="section-header centered">
+          <p class="section-label">Pourquoi nous choisir</p>
+          <div class="divider divider-center"></div>
+          <h2 id="why-title">L'excellence au service<br /><em class="text-accent">de votre croissance</em></h2>
+        </header>
+        <div class="why-grid">
+          {[
+            { num: '01', title: 'Design premium', text: 'Chaque site est une œuvre unique pensée pour votre marque. Pas de template générique — un design qui vous ressemble.' },
+            { num: '02', title: 'Performance & SEO', text: 'Sites ultra-rapides, optimisés pour Google et vos utilisateurs. Score Lighthouse > 90 garanti à la livraison.' },
+            { num: '03', title: 'Accompagnement total', text: 'De la conception à la mise en ligne, nous sommes à vos côtés. Formation incluse, support réactif, pas d\'abandon.' },
+            { num: '04', title: 'Résultats mesurables', text: 'Nous suivons les performances et ajustons la stratégie. Votre succès est notre priorité, pas seulement la livraison.' },
+            { num: '05', title: 'Délais respectés', text: 'Nos processus rodés nous permettent de tenir nos engagements. Vous savez toujours où en est votre projet.' },
+            { num: '06', title: 'Transparence totale', text: 'Devis détaillé, échanges clairs, aucune surprise. Vous choisissez en connaissance de cause, nous livrons ce que nous promettons.' },
+          ].map(item => (
+            <div class="why-item">
+              <span class="why-item__num">{item.num}</span>
+              <div>
+                <h3 class="why-item__title">{item.title}</h3>
+                <p class="why-item__text">{item.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ========== TÉMOIGNAGES — DÉSACTIVÉS TEMPORAIREMENT ========== */}
+    {/* Réactiver cette section (et les 2 blocs commentés en haut du fichier) quand les premiers témoignages clients seront disponibles. */}
+
+    <!-- ========== CTA FINAL ========== -->
+    <section class="section cta-section" aria-labelledby="cta-title">
+      <div class="container cta-inner">
+        <div class="cta-content">
+          <p class="section-label">Passez à l'action</p>
+          <div class="divider"></div>
+          <h2 id="cta-title">Prêt à transformer<br /><em class="text-accent">votre présence en ligne ?</em></h2>
+          <p class="cta-text">
+            Discutons de votre projet. Premier échange gratuit,<br />devis sous 48h, sans engagement.
+          </p>
+          <div class="cta-buttons">
+            <a href="/contact" class="btn btn-primary">Demander un devis gratuit</a>
+            <a href="tel:+33781822821" id="call-btn" class="btn btn-outline">Nous appeler</a>
+          </div>
+        </div>
+        <div class="cta-decoration" aria-hidden="true">
+          <div class="cta-circle"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* Section subtitle */
+  .section-subtitle {
+    max-width: 520px;
+    margin: var(--spacing-sm) auto 0;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+  }
+
+  .services-cta {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+  }
+
+  /* Why grid */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+  }
+
+  .why-item {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    border: 1px solid rgba(255, 107, 44, 0.18);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 248, 242, 0.02);
+    transition: border-color var(--transition), background-color var(--transition), transform var(--transition);
+  }
+
+  .why-item:hover {
+    border-color: rgba(255, 107, 44, 0.4);
+    background: rgba(255, 107, 44, 0.05);
+    transform: translateY(-3px);
+  }
+
+  .why-item__num {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-style: italic;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+    line-height: 1.2;
+  }
+
+  .why-item__title {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .why-item__text {
+    font-size: 0.88rem;
+    color: rgba(255, 248, 242, 0.6);
+    line-height: 1.7;
+  }
+
+  /* Portfolio header */
+  .portfolio-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
+  }
+
+  /* CTA final */
+  .cta-section {
+    background-color: var(--color-bg-alt);
+    overflow: hidden;
+  }
+
+  .cta-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-lg);
+    align-items: center;
+  }
+
+  .cta-text {
+    color: var(--color-text-muted);
+    margin: var(--spacing-sm) 0 var(--spacing-md);
+    line-height: 1.7;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .cta-decoration {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    flex-shrink: 0;
+  }
+
+  .cta-circle {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 107, 44, 0.25);
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: rotateSlow 30s linear infinite;
+  }
+
+  .cta-circle::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 46, 126, 0.25);
+  }
+
+  .cta-circle::after {
+    content: '';
+    position: absolute;
+    inset: 48px;
+    border-radius: 50%;
+    background: var(--gradient-warm);
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 1024px) {
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .cta-inner { grid-template-columns: 1fr; }
+    .cta-decoration { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    .why-grid { grid-template-columns: 1fr; }
+    .portfolio-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<script>
+  const callBtn = document.getElementById('call-btn');
+  if (callBtn) {
+    callBtn.addEventListener('click', (e) => {
+      const ok = window.confirm('Confirmer l\u2019appel au +33 7 81 82 28 21 ?');
+      if (!ok) e.preventDefault();
+    });
+  }
+</script>
