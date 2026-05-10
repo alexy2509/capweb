@@ -1,11 +1,8 @@
 import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   site: 'https://capweb.fr',
-  integrations: [],
-  output: 'hybrid',
-  adapter: netlify(),
+  output: 'static',
   compressHTML: true,
   server: {
     host: true,

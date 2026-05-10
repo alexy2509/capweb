@@ -541,13 +541,26 @@ const countries = [
     }
 
     try {
-      const res = await fetch('/api/contact', {
+      const payload = {
+        access_key: 'REMPLACE_PAR_TA_CLE_WEB3FORMS',
+        subject: `Nouvelle demande de contact — CapWeb (${data.projectType || 'Non précisé'})`,
+        from_name: data.name,
+        email: data.email,
+        phone: data.phone || '—',
+        company: data.company || '—',
+        project_type: data.projectType || '—',
+        message: data.message,
+      };
+
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
+      const json = await res.json();
+
+      if (json.success) {
         form.reset();
         success.hidden = false;
         success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
