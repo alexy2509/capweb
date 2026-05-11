@@ -11,14 +11,14 @@ const services = [
     icon: '◈',
     title: 'Site vitrine',
     description: 'Un site élégant et performant qui reflète votre identité et convainc vos prospects dès la première visite.',
-    features: ['Design sur-mesure', 'Optimisé SEO', 'Mobile-first', 'Formation incluse'],
+    features: ['Design sur-mesure', 'Optimisé SEO', 'Formation incluse'],
     href: '/services#vitrine',
   },
   {
     icon: '◉',
     title: 'E-commerce',
     description: 'Une boutique en ligne performante, intuitive et sécurisée pour développer vos ventes 24h/24.',
-    features: ['Panier & paiement sécurisé', 'Gestion des stocks', 'Fiches produits optimisées', 'Formation back-office'],
+    features: ['Panier & paiement sécurisé', 'Fiches produits optimisées', 'Formation back-office'],
     href: '/services#ecommerce',
     featured: true,
   },
@@ -142,7 +142,17 @@ const testimonials = [
           </div>
         </div>
         <div class="cta-decoration" aria-hidden="true">
-          <div class="cta-circle"></div>
+          <div class="cta-orb">
+            <span class="cta-orb__ring cta-orb__ring--outer"></span>
+            <span class="cta-orb__ring cta-orb__ring--mid"></span>
+            <span class="cta-orb__ring cta-orb__ring--scan"></span>
+            <span class="cta-orb__core"></span>
+            <span class="cta-orb__symbol cta-orb__symbol--n">&lt;/&gt;</span>
+            <span class="cta-orb__symbol cta-orb__symbol--e">{ }</span>
+            <span class="cta-orb__symbol cta-orb__symbol--s">[ ]</span>
+            <span class="cta-orb__symbol cta-orb__symbol--w">01</span>
+            <span class="cta-orb__cursor">_</span>
+          </div>
         </div>
       </div>
     </section>
@@ -256,38 +266,116 @@ const testimonials = [
     flex-shrink: 0;
   }
 
-  .cta-circle {
-    width: 320px;
-    height: 320px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255, 107, 44, 0.25);
+  .cta-orb {
     position: absolute;
-    top: 0;
-    left: 0;
-    animation: rotateSlow 30s linear infinite;
+    inset: 0;
+    display: grid;
+    place-items: center;
   }
 
-  .cta-circle::before {
-    content: '';
+  .cta-orb__ring {
     position: absolute;
-    inset: 24px;
     border-radius: 50%;
-    border: 1.5px solid rgba(255, 46, 126, 0.25);
+    pointer-events: none;
   }
 
-  .cta-circle::after {
-    content: '';
-    position: absolute;
-    inset: 48px;
+  .cta-orb__ring--outer {
+    inset: 0;
+    border: 1.5px dashed rgba(255, 107, 44, 0.45);
+    animation: orbSpin 24s linear infinite;
+  }
+
+  .cta-orb__ring--mid {
+    inset: 36px;
+    border: 1.5px solid rgba(255, 46, 126, 0.30);
+    border-top-color: rgba(255, 46, 126, 0.85);
+    border-right-color: rgba(255, 107, 44, 0.65);
+    animation: orbSpin 12s linear infinite reverse;
+  }
+
+  .cta-orb__ring--scan {
+    inset: 70px;
+    border: 1px solid transparent;
+    background:
+      conic-gradient(from 0deg,
+        rgba(255, 107, 44, 0) 0deg,
+        rgba(255, 107, 44, 0.55) 60deg,
+        rgba(255, 46, 126, 0) 120deg,
+        rgba(255, 46, 126, 0) 360deg) border-box;
+    -webkit-mask:
+      linear-gradient(#000 0 0) padding-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: orbSpin 6s linear infinite;
+  }
+
+  .cta-orb__core {
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     background: var(--gradient-warm);
-    opacity: 0.6;
-    filter: blur(2px);
+    box-shadow:
+      0 0 30px rgba(255, 107, 44, 0.55),
+      inset 0 0 28px rgba(255, 248, 242, 0.25);
+    animation: orbPulse 3.2s ease-in-out infinite;
   }
 
-  @keyframes rotateSlow {
+  .cta-orb__symbol {
+    position: absolute;
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255, 107, 44, 0.85);
+    text-shadow: 0 0 12px rgba(255, 107, 44, 0.4);
+    animation: orbFlicker 4s ease-in-out infinite;
+  }
+
+  .cta-orb__symbol--n { top: 12px;    left: 50%; transform: translateX(-50%); }
+  .cta-orb__symbol--e { right: 12px;  top: 50%;  transform: translateY(-50%); color: rgba(255, 46, 126, 0.85); animation-delay: 0.6s; }
+  .cta-orb__symbol--s { bottom: 12px; left: 50%; transform: translateX(-50%); animation-delay: 1.2s; }
+  .cta-orb__symbol--w { left: 12px;   top: 50%;  transform: translateY(-50%); color: rgba(255, 46, 126, 0.85); animation-delay: 1.8s; }
+
+  .cta-orb__cursor {
+    position: absolute;
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-text-light);
+    line-height: 1;
+    transform: translateY(-2px);
+    animation: orbBlink 1.05s steps(2, end) infinite;
+  }
+
+  @keyframes orbSpin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
+  }
+
+  @keyframes orbPulse {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 30px rgba(255, 107, 44, 0.55), inset 0 0 28px rgba(255, 248, 242, 0.25); }
+    50%      { transform: scale(1.05); box-shadow: 0 0 48px rgba(255, 46, 126, 0.65), inset 0 0 28px rgba(255, 248, 242, 0.30); }
+  }
+
+  @keyframes orbFlicker {
+    0%, 18%, 22%, 100% { opacity: 1; }
+    20%                 { opacity: 0.35; }
+    60%                 { opacity: 0.7; }
+  }
+
+  @keyframes orbBlink {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta-orb__ring--outer,
+    .cta-orb__ring--mid,
+    .cta-orb__ring--scan,
+    .cta-orb__core,
+    .cta-orb__symbol,
+    .cta-orb__cursor { animation: none; }
   }
 
   @media (max-width: 1024px) {
