@@ -80,15 +80,12 @@ const {
 
   .service-card--featured {
     background: var(--gradient-warm);
-    border-color: transparent;
+    border: none;
     color: var(--color-text-light);
-    box-shadow: var(--shadow-glow);
+    box-shadow: 0 12px 40px rgba(255, 46, 126, 0.18);
   }
 
-  .service-card--featured::before {
-    transform: scaleX(1);
-    background: rgba(255,248,242,0.4);
-  }
+  .service-card--featured::before { display: none; }
 
   .service-card__icon {
     font-size: 2rem;
