@@ -143,15 +143,21 @@ const testimonials = [
         </div>
         <div class="cta-decoration" aria-hidden="true">
           <div class="cta-orb">
-            <span class="cta-orb__ring cta-orb__ring--outer"></span>
-            <span class="cta-orb__ring cta-orb__ring--mid"></span>
-            <span class="cta-orb__ring cta-orb__ring--scan"></span>
-            <span class="cta-orb__core"></span>
-            <span class="cta-orb__symbol cta-orb__symbol--n">&lt;/&gt;</span>
-            <span class="cta-orb__symbol cta-orb__symbol--e">{ }</span>
-            <span class="cta-orb__symbol cta-orb__symbol--s">[ ]</span>
-            <span class="cta-orb__symbol cta-orb__symbol--w">01</span>
-            <span class="cta-orb__cursor">_</span>
+            <svg class="cta-orb__arc" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="orbArcGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%"  stop-color="#FF6B2C" stop-opacity="0" />
+                  <stop offset="55%" stop-color="#FF6B2C" stop-opacity="0.85" />
+                  <stop offset="100%" stop-color="#FF2E7E" stop-opacity="1" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="46" stroke="url(#orbArcGrad)" />
+            </svg>
+            <span class="cta-orb__particle cta-orb__particle--a"></span>
+            <span class="cta-orb__particle cta-orb__particle--b"></span>
+            <span class="cta-orb__core">
+              <span class="cta-orb__cursor">_</span>
+            </span>
           </div>
         </div>
       </div>
@@ -261,8 +267,8 @@ const testimonials = [
 
   .cta-decoration {
     position: relative;
-    width: 320px;
-    height: 320px;
+    width: 220px;
+    height: 220px;
     flex-shrink: 0;
   }
 
@@ -273,95 +279,88 @@ const testimonials = [
     place-items: center;
   }
 
-  .cta-orb__ring {
+  .cta-orb__arc {
     position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  .cta-orb__ring--outer {
     inset: 0;
-    border: 1.5px dashed rgba(255, 107, 44, 0.45);
-    animation: orbSpin 24s linear infinite;
-  }
-
-  .cta-orb__ring--mid {
-    inset: 36px;
-    border: 1.5px solid rgba(255, 46, 126, 0.30);
-    border-top-color: rgba(255, 46, 126, 0.85);
-    border-right-color: rgba(255, 107, 44, 0.65);
-    animation: orbSpin 12s linear infinite reverse;
-  }
-
-  .cta-orb__ring--scan {
-    inset: 70px;
-    border: 1px solid transparent;
-    background:
-      conic-gradient(from 0deg,
-        rgba(255, 107, 44, 0) 0deg,
-        rgba(255, 107, 44, 0.55) 60deg,
-        rgba(255, 46, 126, 0) 120deg,
-        rgba(255, 46, 126, 0) 360deg) border-box;
-    -webkit-mask:
-      linear-gradient(#000 0 0) padding-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-    animation: orbSpin 6s linear infinite;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 80 240;
+    animation: orbArcSpin 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
 
   .cta-orb__core {
-    width: 110px;
-    height: 110px;
+    position: relative;
+    width: 92px;
+    height: 92px;
     border-radius: 50%;
     background: var(--gradient-warm);
     box-shadow:
-      0 0 30px rgba(255, 107, 44, 0.55),
-      inset 0 0 28px rgba(255, 248, 242, 0.25);
-    animation: orbPulse 3.2s ease-in-out infinite;
+      0 0 24px rgba(255, 107, 44, 0.35),
+      inset 0 0 22px rgba(255, 248, 242, 0.22);
+    display: grid;
+    place-items: center;
+    animation: orbBreathe 6s ease-in-out infinite;
   }
-
-  .cta-orb__symbol {
-    position: absolute;
-    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: rgba(255, 107, 44, 0.85);
-    text-shadow: 0 0 12px rgba(255, 107, 44, 0.4);
-    animation: orbFlicker 4s ease-in-out infinite;
-  }
-
-  .cta-orb__symbol--n { top: 12px;    left: 50%; transform: translateX(-50%); }
-  .cta-orb__symbol--e { right: 12px;  top: 50%;  transform: translateY(-50%); color: rgba(255, 46, 126, 0.85); animation-delay: 0.6s; }
-  .cta-orb__symbol--s { bottom: 12px; left: 50%; transform: translateX(-50%); animation-delay: 1.2s; }
-  .cta-orb__symbol--w { left: 12px;   top: 50%;  transform: translateY(-50%); color: rgba(255, 46, 126, 0.85); animation-delay: 1.8s; }
 
   .cta-orb__cursor {
-    position: absolute;
     font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--color-text-light);
     line-height: 1;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     animation: orbBlink 1.05s steps(2, end) infinite;
   }
 
-  @keyframes orbSpin {
+  .cta-orb__particle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-text-light);
+    box-shadow: 0 0 8px rgba(255, 107, 44, 0.7);
+    top: 50%;
+    left: 50%;
+    margin: -2.5px 0 0 -2.5px;
+    transform-origin: 0 0;
+  }
+
+  .cta-orb__particle--a {
+    animation: orbOrbit 7s linear infinite;
+  }
+
+  .cta-orb__particle--b {
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 46, 126, 0.9);
+    margin: -1.5px 0 0 -1.5px;
+    box-shadow: 0 0 6px rgba(255, 46, 126, 0.6);
+    animation: orbOrbit 11s linear infinite reverse;
+    animation-delay: -3s;
+  }
+
+  @keyframes orbArcSpin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
   }
 
-  @keyframes orbPulse {
-    0%, 100% { transform: scale(1);    box-shadow: 0 0 30px rgba(255, 107, 44, 0.55), inset 0 0 28px rgba(255, 248, 242, 0.25); }
-    50%      { transform: scale(1.05); box-shadow: 0 0 48px rgba(255, 46, 126, 0.65), inset 0 0 28px rgba(255, 248, 242, 0.30); }
+  @keyframes orbBreathe {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 24px rgba(255, 107, 44, 0.35), inset 0 0 22px rgba(255, 248, 242, 0.22);
+    }
+    50% {
+      transform: scale(1.04);
+      box-shadow: 0 0 36px rgba(255, 46, 126, 0.45), inset 0 0 24px rgba(255, 248, 242, 0.28);
+    }
   }
 
-  @keyframes orbFlicker {
-    0%, 18%, 22%, 100% { opacity: 1; }
-    20%                 { opacity: 0.35; }
-    60%                 { opacity: 0.7; }
+  @keyframes orbOrbit {
+    from { transform: rotate(0deg)   translateX(96px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(96px) rotate(-360deg); }
   }
 
   @keyframes orbBlink {
@@ -370,11 +369,9 @@ const testimonials = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cta-orb__ring--outer,
-    .cta-orb__ring--mid,
-    .cta-orb__ring--scan,
+    .cta-orb__arc,
     .cta-orb__core,
-    .cta-orb__symbol,
+    .cta-orb__particle,
     .cta-orb__cursor { animation: none; }
   }
 
