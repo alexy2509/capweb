@@ -5,42 +5,142 @@ export interface Props {
   title: string;
   description: string;
   image?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  keywords?: string;
 }
 
-const { title, description, image = '/og-image.jpg' } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://capweb.fr');
-const pageTitle = `${title} | CapWeb`;
+const SITE_URL = (Astro.site ?? new URL('https://capweb.pro')).toString().replace(/\/$/, '');
+const {
+  title,
+  description,
+  image = '/favicon.png',
+  noindex = false,
+  type = 'website',
+  keywords,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, SITE_URL + '/').toString().replace(/\/$/, '') || SITE_URL;
+const pageTitle = title.includes('CapWeb') ? title : `${title} | CapWeb`;
+const ogImage = new URL(image, SITE_URL + '/').toString();
+
+// Schema.org LocalBusiness — affiché sur l'accueil uniquement pour éviter la duplication
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
+const businessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': SITE_URL + '/#business',
+  name: 'CapWeb',
+  alternateName: 'CapWeb — Création de sites internet',
+  description: 'Agence web à Quimper, dans le Finistère. Création de sites internet sur-mesure pour artisans, commerçants, indépendants et PME en Bretagne.',
+  url: SITE_URL,
+  logo: SITE_URL + '/logo.png',
+  image: SITE_URL + '/favicon.png',
+  email: 'alexy.beauvarlet@gmail.com',
+  telephone: '+33781822821',
+  priceRange: '€€',
+  areaServed: [
+    { '@type': 'City', name: 'Quimper' },
+    { '@type': 'AdministrativeArea', name: 'Finistère' },
+    { '@type': 'AdministrativeArea', name: 'Bretagne' },
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Quimper',
+    addressRegion: 'Bretagne',
+    postalCode: '29000',
+    addressCountry: 'FR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 47.9960,
+    longitude: -4.0972,
+  },
+  sameAs: [
+    'https://www.instagram.com/capwebbuild',
+  ],
+  serviceType: [
+    'Création de site internet',
+    'Site vitrine',
+    'Site e-commerce',
+    'Refonte de site web',
+    'Référencement SEO local',
+  ],
+  founder: {
+    '@type': 'Person',
+    name: 'Alexy Beauvarlet',
+  },
+};
+
+// Schema WebSite avec SearchAction (pour le sitelinks searchbox de Google)
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': SITE_URL + '/#website',
+  url: SITE_URL,
+  name: 'CapWeb',
+  description: 'Création de sites internet à Quimper, Finistère, Bretagne',
+  inLanguage: 'fr-FR',
+  publisher: { '@id': SITE_URL + '/#business' },
+};
 ---
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr-FR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0E0604" />
+    <meta name="format-detection" content="telephone=yes" />
+
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/favicon.png" />
+
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
     <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
+    <meta name="author" content="CapWeb" />
+    <meta name="generator" content="Astro" />
+
+    <!-- Géolocalisation pour SEO local -->
+    <meta name="geo.region" content="FR-BRE" />
+    <meta name="geo.placename" content="Quimper, Finistère, Bretagne" />
+    <meta name="geo.position" content="47.9960;-4.0972" />
+    <meta name="ICBM" content="47.9960, -4.0972" />
 
     <!-- Open Graph -->
+    <meta property="og:site_name"   content="CapWeb" />
     <meta property="og:title"       content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image"       content={image} />
+    <meta property="og:image"       content={ogImage} />
+    <meta property="og:image:alt"   content="CapWeb — Création de sites internet à Quimper, Finistère, Bretagne" />
     <meta property="og:url"         content={canonicalURL} />
-    <meta property="og:type"        content="website" />
+    <meta property="og:type"        content={type} />
     <meta property="og:locale"      content="fr_FR" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image"       content={image} />
+    <meta name="twitter:image"       content={ogImage} />
 
-    <!-- Google Fonts préchargement -->
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Données structurées Schema.org -->
+    {isHome && (
+      <Fragment>
+        <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
+        <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+      </Fragment>
+    )}
   </head>
   <body>
     <slot />
