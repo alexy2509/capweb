@@ -10,7 +10,6 @@ export interface Props {
   keywords?: string;
 }
 
-const SITE_URL = (Astro.site ?? new URL('https://capweb.pro')).toString().replace(/\/$/, '');
 const {
   title,
   description,
@@ -20,22 +19,22 @@ const {
   keywords,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, SITE_URL + '/').toString().replace(/\/$/, '') || SITE_URL;
+const SITE = Astro.site ?? new URL('https://capweb.pro');
+const canonicalURL = new URL(Astro.url.pathname, SITE).href.replace(/\/$/, '') || SITE.href;
+const ogImage = new URL(image, SITE).href;
 const pageTitle = title.includes('CapWeb') ? title : `${title} | CapWeb`;
-const ogImage = new URL(image, SITE_URL + '/').toString();
+const isHome = Astro.url.pathname === '/';
 
-// Schema.org LocalBusiness — affiché sur l'accueil uniquement pour éviter la duplication
-const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const businessSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
-  '@id': SITE_URL + '/#business',
+  '@id': `${SITE.origin}/#business`,
   name: 'CapWeb',
   alternateName: 'CapWeb — Création de sites internet',
   description: 'Agence web à Quimper, dans le Finistère. Création de sites internet sur-mesure pour artisans, commerçants, indépendants et PME en Bretagne.',
-  url: SITE_URL,
-  logo: SITE_URL + '/logo.png',
-  image: SITE_URL + '/favicon.png',
+  url: SITE.origin,
+  logo: `${SITE.origin}/logo.png`,
+  image: `${SITE.origin}/favicon.png`,
   email: 'alexy.beauvarlet@gmail.com',
   telephone: '+33781822821',
   priceRange: '€€',
@@ -56,9 +55,7 @@ const businessSchema = {
     latitude: 47.9960,
     longitude: -4.0972,
   },
-  sameAs: [
-    'https://www.instagram.com/capwebbuild',
-  ],
+  sameAs: ['https://www.instagram.com/capwebbuild'],
   serviceType: [
     'Création de site internet',
     'Site vitrine',
@@ -66,22 +63,18 @@ const businessSchema = {
     'Refonte de site web',
     'Référencement SEO local',
   ],
-  founder: {
-    '@type': 'Person',
-    name: 'Alexy Beauvarlet',
-  },
+  founder: { '@type': 'Person', name: 'Alexy Beauvarlet' },
 };
 
-// Schema WebSite avec SearchAction (pour le sitelinks searchbox de Google)
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  '@id': SITE_URL + '/#website',
-  url: SITE_URL,
+  '@id': `${SITE.origin}/#website`,
+  url: SITE.origin,
   name: 'CapWeb',
   description: 'Création de sites internet à Quimper, Finistère, Bretagne',
   inLanguage: 'fr-FR',
-  publisher: { '@id': SITE_URL + '/#business' },
+  publisher: { '@id': `${SITE.origin}/#business` },
 };
 ---
 
@@ -103,15 +96,12 @@ const websiteSchema = {
     <link rel="canonical" href={canonicalURL} />
     <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'} />
     <meta name="author" content="CapWeb" />
-    <meta name="generator" content="Astro" />
 
-    <!-- Géolocalisation pour SEO local -->
     <meta name="geo.region" content="FR-BRE" />
     <meta name="geo.placename" content="Quimper, Finistère, Bretagne" />
     <meta name="geo.position" content="47.9960;-4.0972" />
     <meta name="ICBM" content="47.9960, -4.0972" />
 
-    <!-- Open Graph -->
     <meta property="og:site_name"   content="CapWeb" />
     <meta property="og:title"       content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -121,20 +111,16 @@ const websiteSchema = {
     <meta property="og:type"        content={type} />
     <meta property="og:locale"      content="fr_FR" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card"        content="summary_large_image" />
     <meta name="twitter:title"       content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image"       content={ogImage} />
 
-    <!-- Sitemap -->
     <link rel="sitemap" href="/sitemap.xml" />
 
-    <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Données structurées Schema.org -->
     {isHome && (
       <Fragment>
         <script type="application/ld+json" set:html={JSON.stringify(businessSchema)} />
