@@ -4,4 +4,4 @@ Allow: /
 Disallow: /mentions-legales
 Disallow: /politique-de-confidentialite
 
-Sitemap: https://capweb.pro/sitemap-index.xml
+Sitemap: https://capweb.pro/sitemap.xml
