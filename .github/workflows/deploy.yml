@@ -27,12 +27,14 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Push built site to production branch
-        run: |
-          cd dist
-          git init -b production
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Build from ${GITHUB_SHA::7}"
-          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" production
+      - name: Deploy to production branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: production
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Build from ${{ github.sha }}'
+          force_orphan: false
+          keep_files: false
