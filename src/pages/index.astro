@@ -153,13 +153,65 @@ const testimonials = [
               </defs>
               <circle cx="50" cy="50" r="46" stroke="url(#orbArcGrad)" />
             </svg>
-            <span class="cta-orb__particle cta-orb__particle--a"></span>
-            <span class="cta-orb__particle cta-orb__particle--b"></span>
-            <span class="cta-orb__core">
-              <span class="cta-orb__cursor">_</span>
-            </span>
+
+            <span class="cta-orb__symbol cta-orb__symbol--a">&lt;/&gt;</span>
+            <span class="cta-orb__symbol cta-orb__symbol--b">{ }</span>
+            <span class="cta-orb__symbol cta-orb__symbol--c">01</span>
+            <span class="cta-orb__symbol cta-orb__symbol--d">;</span>
+            <span class="cta-orb__symbol cta-orb__symbol--e">[ ]</span>
+
+            <span class="cta-orb__particle cta-orb__particle--p1"></span>
+            <span class="cta-orb__particle cta-orb__particle--p2"></span>
+            <span class="cta-orb__particle cta-orb__particle--p3"></span>
+            <span class="cta-orb__particle cta-orb__particle--p4"></span>
+
+            <div class="cta-orb__window" id="cta-orb-window">
+              <span class="cta-orb__dot"></span>
+              <span class="cta-orb__dot"></span>
+              <span class="cta-orb__dot"></span>
+              <div class="cta-orb__code" id="cta-orb-code">
+                <span class="cta-orb__line cta-orb__line--1"></span>
+                <span class="cta-orb__line cta-orb__line--2"></span>
+                <span class="cta-orb__line cta-orb__line--3"></span>
+              </div>
+            </div>
           </div>
         </div>
+
+        <script is:inline>
+          (() => {
+            const code = document.getElementById('cta-orb-code');
+            if (!code) return;
+            const lines = code.querySelectorAll('.cta-orb__line');
+
+            const snippets = [
+              ['<i>const</i> site = <b>build</b>();', '<i>const</i> ux   = <b>premium</b>;', '&gt; deploy<span class="cta-orb__cursor">_</span>'],
+              ['<i>npm</i> install capweb',           '<i>npm</i> run <b>shine</b>',         '&gt; ready<span class="cta-orb__cursor">_</span>'],
+              ['<i>git</i> commit -m <b>"ux"</b>',    '<i>git</i> push origin',              '&gt; live<span class="cta-orb__cursor">_</span>'],
+              ['&lt;Site speed=<b>"fast"</b>/&gt;',   '&lt;SEO local /&gt;',                 '&gt; indexed<span class="cta-orb__cursor">_</span>'],
+              ['<i>function</i> craft() {',           '  <i>return</i> <b>magic</b>;',       '&gt; shipped<span class="cta-orb__cursor">_</span>'],
+              ['<i>let</i> dream = <b>code</b>()',    '<i>let</i> client = <b>happy</b>',    '&gt; done<span class="cta-orb__cursor">_</span>'],
+              ['<i>brew</i> install seo',             '<i>brew</i> update --all',            '&gt; ranked<span class="cta-orb__cursor">_</span>'],
+            ];
+
+            let last = -1;
+            const swap = () => {
+              let i;
+              do { i = Math.floor(Math.random() * snippets.length); } while (i === last && snippets.length > 1);
+              last = i;
+              const [a, b, c] = snippets[i];
+              code.classList.remove('is-typing');
+              void code.offsetWidth;
+              lines[0].innerHTML = a;
+              lines[1].innerHTML = b;
+              lines[2].innerHTML = c;
+              code.classList.add('is-typing');
+            };
+
+            swap();
+            setInterval(swap, 5400);
+          })();
+        </script>
       </div>
     </section>
 
@@ -291,55 +343,119 @@ const testimonials = [
     animation: orbArcSpin 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
 
-  .cta-orb__core {
+  /* Mini fenêtre éditeur de code au centre */
+  .cta-orb__window {
     position: relative;
-    width: 92px;
-    height: 92px;
-    border-radius: 50%;
-    background: var(--gradient-warm);
+    width: 158px;
+    padding: 22px 14px 12px;
+    border-radius: 10px;
+    background: linear-gradient(160deg, rgba(20, 10, 7, 0.92) 0%, rgba(36, 14, 22, 0.92) 100%);
+    border: 1px solid rgba(255, 107, 44, 0.35);
     box-shadow:
-      0 0 24px rgba(255, 107, 44, 0.35),
-      inset 0 0 22px rgba(255, 248, 242, 0.22);
-    display: grid;
-    place-items: center;
+      0 0 24px rgba(255, 46, 126, 0.25),
+      inset 0 1px 0 rgba(255, 248, 242, 0.05);
     animation: orbBreathe 6s ease-in-out infinite;
   }
 
-  .cta-orb__cursor {
+  .cta-orb__dot {
+    position: absolute;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .cta-orb__dot:nth-of-type(1) { left: 12px; background: #FF5F57; }
+  .cta-orb__dot:nth-of-type(2) { left: 24px; background: #FFB347; }
+  .cta-orb__dot:nth-of-type(3) { left: 36px; background: #FF2E7E; }
+
+  .cta-orb__code {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
     font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
-    font-size: 1.4rem;
+    font-size: 0.62rem;
+    line-height: 1.45;
+    color: rgba(255, 248, 242, 0.85);
+    overflow: hidden;
+  }
+
+  .cta-orb__line {
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 1.5px solid transparent;
+  }
+
+  .cta-orb__line i { color: #FF6B2C; font-style: normal; }
+  .cta-orb__line b { color: #FF2E7E; font-weight: 600; }
+
+  .cta-orb__code .cta-orb__line { width: 0; opacity: 0; }
+
+  .cta-orb__code.is-typing .cta-orb__line--1 { animation: typeOnce 1.4s steps(22, end) forwards; }
+  .cta-orb__code.is-typing .cta-orb__line--2 { animation: typeOnce 1.4s steps(22, end) forwards; animation-delay: 1.2s; }
+  .cta-orb__code.is-typing .cta-orb__line--3 { animation: typeOnce 1.4s steps(22, end) forwards; animation-delay: 2.4s; }
+
+  .cta-orb__cursor {
+    color: #FF2E7E;
     font-weight: 700;
-    color: var(--color-text-light);
-    line-height: 1;
-    transform: translateY(-3px);
     animation: orbBlink 1.05s steps(2, end) infinite;
   }
 
-  .cta-orb__particle {
+  /* Petits symboles de code qui orbitent autour */
+  .cta-orb__symbol {
     position: absolute;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-text-light);
-    box-shadow: 0 0 8px rgba(255, 107, 44, 0.7);
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: rgba(255, 107, 44, 0.85);
+    text-shadow: 0 0 10px rgba(255, 107, 44, 0.4);
     top: 50%;
     left: 50%;
-    margin: -2.5px 0 0 -2.5px;
+    margin: -0.5em 0 0 -1em;
     transform-origin: 0 0;
   }
 
-  .cta-orb__particle--a {
-    animation: orbOrbit 7s linear infinite;
-  }
+  .cta-orb__symbol--a { animation: orbOrbit 14s linear infinite; }
+  .cta-orb__symbol--b { animation: orbOrbit 18s linear infinite reverse; animation-delay: -6s; color: rgba(255, 46, 126, 0.85); }
+  .cta-orb__symbol--c { animation: orbOrbit 22s linear infinite; animation-delay: -10s; }
+  .cta-orb__symbol--d { animation: orbOrbit 26s linear infinite reverse; animation-delay: -3s; font-size: 0.85rem; color: rgba(255, 107, 44, 0.7); }
+  .cta-orb__symbol--e { animation: orbOrbit 30s linear infinite; animation-delay: -16s; font-size: 0.65rem; color: rgba(255, 46, 126, 0.7); }
 
-  .cta-orb__particle--b {
-    width: 3px;
-    height: 3px;
-    background: rgba(255, 46, 126, 0.9);
-    margin: -1.5px 0 0 -1.5px;
-    box-shadow: 0 0 6px rgba(255, 46, 126, 0.6);
+  /* Particules de codage qui tournent */
+  .cta-orb__particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    pointer-events: none;
+    transform-origin: 0 0;
+  }
+  .cta-orb__particle--p1 {
+    width: 4px; height: 4px; margin: -2px 0 0 -2px;
+    background: #FF6B2C;
+    box-shadow: 0 0 8px rgba(255, 107, 44, 0.8);
+    animation: orbOrbit 8s linear infinite;
+    animation-delay: -2s;
+  }
+  .cta-orb__particle--p2 {
+    width: 3px; height: 3px; margin: -1.5px 0 0 -1.5px;
+    background: #FF2E7E;
+    box-shadow: 0 0 6px rgba(255, 46, 126, 0.7);
     animation: orbOrbit 11s linear infinite reverse;
-    animation-delay: -3s;
+    animation-delay: -5s;
+  }
+  .cta-orb__particle--p3 {
+    width: 2px; height: 2px; margin: -1px 0 0 -1px;
+    background: rgba(255, 248, 242, 0.85);
+    box-shadow: 0 0 5px rgba(255, 179, 71, 0.7);
+    animation: orbOrbitFar 13s linear infinite;
+    animation-delay: -8s;
+  }
+  .cta-orb__particle--p4 {
+    width: 5px; height: 1px; border-radius: 1px;
+    margin: -0.5px 0 0 -2.5px;
+    background: linear-gradient(90deg, transparent, #FF6B2C, transparent);
+    animation: orbOrbitFar 9s linear infinite reverse;
+    animation-delay: -1s;
   }
 
   @keyframes orbArcSpin {
@@ -349,18 +465,27 @@ const testimonials = [
 
   @keyframes orbBreathe {
     0%, 100% {
-      transform: scale(1);
-      box-shadow: 0 0 24px rgba(255, 107, 44, 0.35), inset 0 0 22px rgba(255, 248, 242, 0.22);
+      box-shadow: 0 0 22px rgba(255, 46, 126, 0.22), inset 0 1px 0 rgba(255, 248, 242, 0.05);
     }
     50% {
-      transform: scale(1.04);
-      box-shadow: 0 0 36px rgba(255, 46, 126, 0.45), inset 0 0 24px rgba(255, 248, 242, 0.28);
+      box-shadow: 0 0 34px rgba(255, 107, 44, 0.32), inset 0 1px 0 rgba(255, 248, 242, 0.08);
     }
   }
 
+  @keyframes typeOnce {
+    0%   { width: 0;    opacity: 1; border-right-color: #FF2E7E; }
+    99%  { width: 100%; opacity: 1; border-right-color: #FF2E7E; }
+    100% { width: 100%; opacity: 1; border-right-color: transparent; }
+  }
+
   @keyframes orbOrbit {
-    from { transform: rotate(0deg)   translateX(96px) rotate(0deg); }
-    to   { transform: rotate(360deg) translateX(96px) rotate(-360deg); }
+    from { transform: rotate(0deg)   translateX(102px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(102px) rotate(-360deg); }
+  }
+
+  @keyframes orbOrbitFar {
+    from { transform: rotate(0deg)   translateX(108px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(108px) rotate(-360deg); }
   }
 
   @keyframes orbBlink {
@@ -370,9 +495,12 @@ const testimonials = [
 
   @media (prefers-reduced-motion: reduce) {
     .cta-orb__arc,
-    .cta-orb__core,
+    .cta-orb__window,
+    .cta-orb__line,
+    .cta-orb__symbol,
     .cta-orb__particle,
-    .cta-orb__cursor { animation: none; }
+    .cta-orb__cursor { animation: none !important; }
+    .cta-orb__line { opacity: 1 !important; width: 100% !important; }
   }
 
   @media (max-width: 1024px) {
