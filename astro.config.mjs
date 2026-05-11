@@ -6,7 +6,6 @@ export default defineConfig({
   compressHTML: true,
   server: {
     host: true,
-    port: 4321,
   },
   build: {
     assets: 'assets',
