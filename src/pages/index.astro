@@ -2,69 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavBar from '../components/NavBar.astro';
 import Hero from '../components/Hero.astro';
-import ServiceCard from '../components/ServiceCard.astro';
-// import Testimonial from '../components/Testimonial.astro'; // Réactiver quand témoignages disponibles
 import Footer from '../components/Footer.astro';
 
-const services = [
-  {
-    icon: '◈',
-    title: 'Site vitrine',
-    description: 'Un site élégant et performant qui reflète votre identité et convainc vos prospects dès la première visite.',
-    features: ['Design sur-mesure', 'Optimisé SEO', 'Formation incluse'],
-    href: '/services#vitrine',
-  },
-  {
-    icon: '◉',
-    title: 'E-commerce',
-    description: 'Une boutique en ligne performante, intuitive et sécurisée pour développer vos ventes 24h/24.',
-    features: ['Panier & paiement sécurisé', 'Fiches produits optimisées', 'Formation back-office'],
-    href: '/services#ecommerce',
-    featured: true,
-  },
-  {
-    icon: '◌',
-    title: 'Refonte',
-    description: 'Donnez un nouveau souffle à votre site existant — design moderne, vitesse améliorée, résultats mesurables.',
-    features: ['Audit complet', 'Nouveau design', 'Migration de contenu', 'Redirections SEO'],
-    href: '/services#refonte',
-  },
-  {
-    icon: '◎',
-    title: 'Référencement',
-    description: 'Apparaissez en première page de Google et attirez un trafic qualifié grâce à nos stratégies SEO éprouvées.',
-    features: ['Google Business Profile', 'Suivi des positions locales', 'Rapport mensuel', 'Stratégie sur-mesure'],
-    href: '/services#seo',
-  },
+const offers = [
+  { icon: '◈', title: 'Site vitrine',   tagline: 'Une présence en ligne élégante qui inspire confiance.',     href: '/services#vitrine'   },
+  { icon: '◉', title: 'E-commerce',     tagline: 'Une boutique fluide qui transforme vos visiteurs en clients.', href: '/services#ecommerce' },
+  { icon: '◌', title: 'Refonte',        tagline: 'Redonner souffle, rapidité et style à votre site existant.',  href: '/services#refonte'   },
+  { icon: '◎', title: 'Référencement',  tagline: 'Être trouvé sur Google par les bonnes personnes.',            href: '/services#seo'       },
 ];
-
-// Témoignages désactivés temporairement — à réactiver quand CapWeb aura ses premiers clients
-/*
-const testimonials = [
-  {
-    quote: 'Je voulais un site pour mettre en avant mes prestations de nettoyage automobile et permettre la prise de rendez-vous en ligne. Le résultat est bluffant : design pro, formulaire fluide, et mon téléphone sonne beaucoup plus qu\'avant.',
-    author: 'Tom N.',
-    role: 'Gérant',
-    company: 'Nettoyage automobile',
-  },
-  {
-    quote: 'Mon univers artisanal méritait une vitrine à la hauteur de mes créations en bois et résine. CapWeb a su capter mon identité et la retranscrire avec goût. Le rendu est chaleureux, élégant, et mes pièces sont enfin mises en valeur.',
-    author: 'Valérie B.',
-    role: 'Artisane créatrice',
-    company: 'Bois & Résine',
-  },
-  {
-    quote: 'En tant que coiffeur indépendant, je cherchais un site moderne qui me ressemble et qui permette à mes clients de réserver facilement. Mission accomplie : simple, rapide, et mes créneaux se remplissent tout seuls.',
-    author: 'Mathéo J.',
-    role: 'Coiffeur indépendant',
-    company: 'Studio coiffure',
-  },
-];
-*/
 ---
 
 <BaseLayout
-  title="Création de site internet à Quimper, Finistère & Bretagne — CapWeb"
+  title="Création de site internet à Quimper, Finistère & Bretagne · CapWeb"
   description="CapWeb crée facilement des sites internet professionnels et pas chers pour les artisans, commerçants et entreprises de Quimper, du Finistère et de toute la Bretagne. Devis gratuit sous 48h."
   keywords="création site internet Quimper, site web Finistère, agence web Bretagne, création site internet artisan, site internet pas cher Bretagne, création site web entreprise Quimper"
 >
@@ -74,7 +23,7 @@ const testimonials = [
     <!-- ========== HERO ========== -->
     <Hero />
 
-    <!-- ========== SERVICES ========== -->
+    <!-- ========== OFFRES (aperçu épuré) ========== -->
     <section class="section section-alt" id="services" aria-labelledby="services-title">
       <div class="container">
         <header class="section-header centered">
@@ -82,14 +31,25 @@ const testimonials = [
           <div class="divider divider-center"></div>
           <h2 id="services-title">Nos offres</h2>
           <p class="section-subtitle">
-            Des solutions web adaptées à chaque ambition, conçues pour performer.
+            Quatre façons de faire grandir votre présence en ligne.
           </p>
         </header>
-        <div class="grid-4">
-          {services.map(s => <ServiceCard {...s} />)}
-        </div>
+
+        <ul class="offers-grid" role="list">
+          {offers.map(o => (
+            <li class="offer-tile">
+              <a href={o.href} class="offer-tile__link">
+                <span class="offer-tile__icon" aria-hidden="true">{o.icon}</span>
+                <h3 class="offer-tile__title">{o.title}</h3>
+                <p class="offer-tile__tagline">{o.tagline}</p>
+                <span class="offer-tile__arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
         <div class="services-cta">
-          <a href="/services" class="btn btn-outline">Voir toutes nos offres</a>
+          <a href="/services" class="btn btn-outline">Découvrir nos offres en détail</a>
         </div>
       </div>
     </section>
@@ -104,7 +64,7 @@ const testimonials = [
         </header>
         <div class="why-grid">
           {[
-            { num: '01', title: 'Design premium', text: 'Chaque site est une œuvre unique pensée pour votre marque. Pas de template générique — un design qui vous ressemble.' },
+            { num: '01', title: 'Design premium', text: 'Chaque site est une œuvre unique pensée pour votre marque. Pas de template générique, un design qui vous ressemble.' },
             { num: '02', title: 'Performance & SEO', text: 'Sites ultra-rapides, optimisés pour Google et vos utilisateurs. Score Lighthouse > 90 garanti à la livraison.' },
             { num: '03', title: 'Accompagnement total', text: 'De la conception à la mise en ligne, nous sommes à vos côtés. Formation incluse, support réactif, pas d\'abandon.' },
             { num: '04', title: 'Résultats mesurables', text: 'Nous suivons les performances et ajustons la stratégie. Votre succès est notre priorité, pas seulement la livraison.' },
@@ -122,9 +82,6 @@ const testimonials = [
         </div>
       </div>
     </section>
-
-    {/* ========== TÉMOIGNAGES — DÉSACTIVÉS TEMPORAIREMENT ========== */}
-    {/* Réactiver cette section (et les 2 blocs commentés en haut du fichier) quand les premiers témoignages clients seront disponibles. */}
 
     <!-- ========== CTA FINAL ========== -->
     <section class="section cta-section" aria-labelledby="cta-title">
@@ -232,6 +189,99 @@ const testimonials = [
     display: flex;
     justify-content: center;
     margin-top: var(--spacing-lg);
+  }
+
+  /* Offres épurées · aperçu sur la page d'accueil */
+  .offers-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-sm);
+  }
+
+  .offer-tile { margin: 0; }
+
+  .offer-tile__link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid rgba(255, 107, 44, 0.18);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 248, 242, 0.02);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color var(--transition), transform var(--transition), background-color var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .offer-tile__link::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition);
+  }
+
+  .offer-tile__link:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 107, 44, 0.45);
+    background: rgba(255, 107, 44, 0.04);
+  }
+
+  .offer-tile__link:hover::before { transform: scaleX(1); }
+
+  .offer-tile__icon {
+    font-size: 1.6rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+
+  .offer-tile__title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .offer-tile__tagline {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .offer-tile__arrow {
+    align-self: flex-end;
+    font-size: 1.1rem;
+    color: var(--color-primary);
+    opacity: 0.5;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+
+  .offer-tile__link:hover .offer-tile__arrow {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 1024px) {
+    .offers-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .offers-grid { grid-template-columns: 1fr; }
   }
 
   /* Why grid */

@@ -1,0 +1,552 @@
+---
+/**
+ * CookieConsent — bandeau + modal conformes CNIL/RGPD 2026.
+ *
+ * Bandeau discret bas-centré, 3 boutons strictement équivalents
+ * (Refuser / Personnaliser / Accepter), modal granulaire, lien permanent.
+ *
+ * API JS exposée pour brancher des scripts tiers (Matomo, Plausible, etc.) :
+ *   window.cookieConsent.onAccept('analytics', () => loadMatomo());
+ *   window.cookieConsent.onAccept('marketing', () => loadMetaPixel());
+ *   window.cookieConsent.has('analytics') // boolean
+ *   window.cookieConsent.open() // rouvre la modal
+ */
+---
+
+<aside id="cc-banner" class="cc-banner" role="dialog" aria-labelledby="cc-banner-title" aria-describedby="cc-banner-text" hidden>
+  <button type="button" class="cc-banner__close" aria-label="Fermer (équivaut à un refus)" data-cc-action="reject">×</button>
+  <div class="cc-banner__body">
+    <h2 id="cc-banner-title" class="cc-banner__title">Cookies & vie privée</h2>
+    <p id="cc-banner-text" class="cc-banner__text">
+      Nous utilisons des cookies pour mesurer la qualité de votre visite et améliorer notre site.
+      Vos données ne sont jamais revendues. Vous décidez.
+      <a href="/politique-cookies">En savoir plus</a>
+    </p>
+    <div class="cc-banner__actions" role="group" aria-label="Choix de cookies">
+      <button type="button" class="cc-btn" data-cc-action="reject">Tout refuser</button>
+      <button type="button" class="cc-btn" data-cc-action="customize">Personnaliser</button>
+      <button type="button" class="cc-btn" data-cc-action="accept">Tout accepter</button>
+    </div>
+  </div>
+</aside>
+
+<div id="cc-modal" class="cc-modal" role="dialog" aria-modal="true" aria-labelledby="cc-modal-title" hidden>
+  <div class="cc-modal__backdrop" data-cc-action="close-modal"></div>
+  <div class="cc-modal__card">
+    <header class="cc-modal__header">
+      <h2 id="cc-modal-title" class="cc-modal__title">Préférences de cookies</h2>
+      <button type="button" class="cc-modal__close" aria-label="Fermer" data-cc-action="close-modal">×</button>
+    </header>
+
+    <div class="cc-modal__body">
+      <p class="cc-modal__intro">
+        Choisissez les catégories de cookies que vous autorisez. Vos préférences sont conservées 6 mois
+        et vous pouvez les modifier à tout moment via le lien « Gérer mes cookies » en bas de page.
+      </p>
+
+      <section class="cc-cat">
+        <header class="cc-cat__header">
+          <label class="cc-toggle cc-toggle--locked">
+            <input type="checkbox" checked disabled />
+            <span class="cc-toggle__slider" aria-hidden="true"></span>
+          </label>
+          <h3 class="cc-cat__title">Essentiels <span class="cc-cat__badge">Toujours actif</span></h3>
+        </header>
+        <p class="cc-cat__desc">
+          Indispensables au bon fonctionnement du site (mémorisation de vos préférences de cookies,
+          envoi du formulaire de contact). Aucune donnée d'identification personnelle.
+        </p>
+      </section>
+
+      <section class="cc-cat">
+        <header class="cc-cat__header">
+          <label class="cc-toggle">
+            <input type="checkbox" id="cc-cat-analytics" />
+            <span class="cc-toggle__slider" aria-hidden="true"></span>
+          </label>
+          <h3 class="cc-cat__title">Mesure d'audience</h3>
+        </header>
+        <p class="cc-cat__desc">
+          Statistiques anonymes sur les pages visitées, la durée de session, le type d'appareil.
+          Données agrégées, jamais croisées avec d'autres traitements. Cookies conservés 13 mois maximum.
+        </p>
+      </section>
+
+      <section class="cc-cat">
+        <header class="cc-cat__header">
+          <label class="cc-toggle">
+            <input type="checkbox" id="cc-cat-marketing" />
+            <span class="cc-toggle__slider" aria-hidden="true"></span>
+          </label>
+          <h3 class="cc-cat__title">Marketing</h3>
+        </header>
+        <p class="cc-cat__desc">
+          Personnalisation des publicités sur d'autres sites (réseaux sociaux, moteurs de recherche).
+          Aucun outil de ce type n'est actuellement déposé sur CapWeb.
+        </p>
+      </section>
+    </div>
+
+    <footer class="cc-modal__footer">
+      <button type="button" class="cc-btn" data-cc-action="reject">Tout refuser</button>
+      <button type="button" class="cc-btn" data-cc-action="accept">Tout accepter</button>
+      <button type="button" class="cc-btn cc-btn--primary" data-cc-action="save">Confirmer mes choix</button>
+    </footer>
+  </div>
+</div>
+
+<style>
+  /* ---- Bandeau discret bas-centré ---- */
+  .cc-banner {
+    position: fixed;
+    z-index: 1000;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    width: min(640px, calc(100% - 2rem));
+    background: rgba(14, 6, 4, 0.96);
+    color: var(--color-text-light);
+    border: 1px solid rgba(255, 107, 44, 0.35);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem 1rem 1rem;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 248, 242, 0.04);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  }
+
+  .cc-banner[hidden] { display: none; }
+
+  .cc-banner.is-visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  .cc-banner__close {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    border: none;
+    background: transparent;
+    color: rgba(255, 248, 242, 0.6);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .cc-banner__close:hover { color: var(--color-text-light); background: rgba(255, 248, 242, 0.08); }
+
+  .cc-banner__title {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0 0 0.25rem;
+    color: var(--color-text-light);
+  }
+
+  .cc-banner__text {
+    margin: 0 0 0.85rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: rgba(255, 248, 242, 0.75);
+  }
+
+  .cc-banner__text a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .cc-banner__actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  /* ---- Boutons identiques (conformité CNIL) ---- */
+  .cc-btn {
+    width: 100%;
+    padding: 0.55rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--color-text-light);
+    background: rgba(255, 248, 242, 0.10);
+    border: 1px solid rgba(255, 248, 242, 0.22);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .cc-btn:hover, .cc-btn:focus-visible {
+    background: rgba(255, 248, 242, 0.18);
+    border-color: rgba(255, 248, 242, 0.4);
+    outline: none;
+  }
+
+  .cc-btn--primary {
+    background: var(--gradient-primary);
+    border-color: transparent;
+    font-weight: 600;
+  }
+
+  .cc-btn--primary:hover, .cc-btn--primary:focus-visible {
+    background: linear-gradient(135deg, #FF2E7E 0%, #FF6B2C 100%);
+    color: #fff;
+  }
+
+  /* ---- Modal de personnalisation ---- */
+  .cc-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .cc-modal[hidden] { display: none; }
+
+  .cc-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 6, 4, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+
+  .cc-modal__card {
+    position: relative;
+    width: min(640px, 100%);
+    max-height: calc(100dvh - 2rem);
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: ccPop 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes ccPop {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .cc-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cc-modal__title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .cc-modal__close {
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .cc-modal__close:hover { background: rgba(0, 0, 0, 0.06); color: var(--color-text); }
+
+  .cc-modal__body {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .cc-modal__intro {
+    font-size: 0.92rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .cc-cat {
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cc-cat:first-of-type { border-top: none; padding-top: 0; }
+
+  .cc-cat__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cc-cat__title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0;
+    flex: 1;
+  }
+
+  .cc-cat__badge {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0.15rem 0.55rem;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: rgba(255, 107, 44, 0.12);
+    color: var(--color-primary);
+    border-radius: 999px;
+    vertical-align: middle;
+  }
+
+  .cc-cat__desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+    margin: 0 0 0 3.25rem;
+  }
+
+  /* ---- Toggle switch ---- */
+  .cc-toggle {
+    position: relative;
+    display: inline-block;
+    width: 2.5rem;
+    height: 1.4rem;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .cc-toggle--locked { cursor: not-allowed; }
+
+  .cc-toggle input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    margin: 0;
+    cursor: inherit;
+  }
+
+  .cc-toggle__slider {
+    position: absolute;
+    inset: 0;
+    background: var(--color-border);
+    border-radius: 999px;
+    transition: background-color 0.25s ease;
+  }
+
+  .cc-toggle__slider::before {
+    content: '';
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s ease;
+  }
+
+  .cc-toggle input:checked + .cc-toggle__slider {
+    background: var(--gradient-primary);
+  }
+
+  .cc-toggle input:checked + .cc-toggle__slider::before {
+    transform: translateX(1.1rem);
+  }
+
+  .cc-toggle input:focus-visible + .cc-toggle__slider {
+    box-shadow: 0 0 0 3px rgba(255, 107, 44, 0.3);
+  }
+
+  .cc-toggle--locked .cc-toggle__slider { opacity: 0.6; }
+
+  .cc-modal__footer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+  }
+
+  .cc-modal__footer .cc-btn {
+    color: var(--color-text);
+    background: white;
+    border: 1px solid var(--color-border);
+  }
+
+  .cc-modal__footer .cc-btn:hover,
+  .cc-modal__footer .cc-btn:focus-visible {
+    background: rgba(255, 107, 44, 0.08);
+    border-color: var(--color-primary);
+  }
+
+  .cc-modal__footer .cc-btn--primary {
+    background: var(--gradient-primary);
+    color: var(--color-text-light);
+    border-color: transparent;
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 560px) {
+    .cc-banner { bottom: 0.5rem; padding: 0.85rem 0.85rem 0.85rem 0.85rem; }
+    .cc-banner__actions { grid-template-columns: 1fr; }
+    .cc-modal__footer { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cc-banner, .cc-modal__card { transition: none; animation: none; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = 'cc_consent';
+    const COOKIE_NAME = 'cookie_consent';
+    const VERSION = '1.0';
+    const RENEWAL_DAYS = 180;
+
+    const banner = document.getElementById('cc-banner');
+    const modal  = document.getElementById('cc-modal');
+    const togAnalytics = document.getElementById('cc-cat-analytics');
+    const togMarketing = document.getElementById('cc-cat-marketing');
+
+    /* --- Lecture / écriture du consentement --- */
+    const readStored = () => {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (parsed.version !== VERSION) return null;
+        // Expiration : 6 mois
+        const age = Date.now() - new Date(parsed.timestamp).getTime();
+        if (age > RENEWAL_DAYS * 86400000) return null;
+        return parsed;
+      } catch { return null; }
+    };
+
+    const writeStored = (categories) => {
+      const id = (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+      const data = {
+        version: VERSION,
+        timestamp: new Date().toISOString(),
+        categories,
+        consent_id: id,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      // Cookie 6 mois (preuve côté navigateur)
+      const expires = new Date(Date.now() + RENEWAL_DAYS * 86400000).toUTCString();
+      document.cookie = `${COOKIE_NAME}=${id}; expires=${expires}; path=/; SameSite=Lax; Secure`;
+      return data;
+    };
+
+    /* --- API publique pour brancher des scripts tiers --- */
+    const listeners = { analytics: [], marketing: [] };
+
+    const triggerListeners = (cat) => {
+      while (listeners[cat] && listeners[cat].length) {
+        const cb = listeners[cat].shift();
+        try { cb(); } catch (e) { console.error('cookieConsent listener error', e); }
+      }
+    };
+
+    window.cookieConsent = {
+      onAccept(category, callback) {
+        if (!listeners[category]) return;
+        const stored = readStored();
+        if (stored && stored.categories[category]) {
+          try { callback(); } catch (e) { console.error(e); }
+        } else {
+          listeners[category].push(callback);
+        }
+      },
+      has(category) {
+        const stored = readStored();
+        return !!(stored && stored.categories[category]);
+      },
+      open() { showModal(); },
+    };
+
+    /* --- UI : bandeau + modal --- */
+    const showBanner = () => {
+      banner.hidden = false;
+      requestAnimationFrame(() => banner.classList.add('is-visible'));
+    };
+
+    const hideBanner = () => {
+      banner.classList.remove('is-visible');
+      setTimeout(() => { banner.hidden = true; }, 450);
+    };
+
+    const showModal = () => {
+      const stored = readStored();
+      togAnalytics.checked = !!(stored && stored.categories.analytics);
+      togMarketing.checked = !!(stored && stored.categories.marketing);
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    };
+
+    const hideModal = () => {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    };
+
+    const applyChoice = (categories) => {
+      writeStored({ essential: true, ...categories });
+      if (categories.analytics) triggerListeners('analytics');
+      if (categories.marketing) triggerListeners('marketing');
+      hideBanner();
+      hideModal();
+    };
+
+    /* --- Bind actions --- */
+    document.addEventListener('click', (e) => {
+      const action = e.target instanceof HTMLElement ? e.target.dataset.ccAction : null;
+      if (!action) return;
+      if (action === 'accept')     applyChoice({ analytics: true,  marketing: true  });
+      if (action === 'reject')     applyChoice({ analytics: false, marketing: false });
+      if (action === 'customize')  { hideBanner(); showModal(); }
+      if (action === 'close-modal') hideModal();
+      if (action === 'save')       applyChoice({
+        analytics: togAnalytics.checked,
+        marketing: togMarketing.checked,
+      });
+    });
+
+    /* Échap ferme la modal */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.hidden) hideModal();
+    });
+
+    /* --- Première visite ou consentement expiré : afficher le bandeau --- */
+    if (!readStored()) {
+      // Petit délai pour ne pas dégrader le LCP
+      setTimeout(showBanner, 1200);
+    }
+  })();
+</script>

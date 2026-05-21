@@ -1,5 +1,5 @@
 ---
-// Formulaire de contact — validation HTML5 + soumission vers /api/contact
+// Formulaire de contact : validation HTML5 + soumission directe à Web3Forms.
 // Liste des codes téléphoniques internationaux (France en tête, puis ordre alphabétique).
 const countries = [
   { code: '+33',  flag: '🇫🇷', name: 'France' },
@@ -204,8 +204,14 @@ const countries = [
 ];
 ---
 
-<form class="contact-form" id="contact-form" novalidate>
+<form class="contact-form" id="contact-form" novalidate autocomplete="on">
   <input type="hidden" id="pack" name="pack" value="" />
+  {/* Honeypot anti-bot : invisible aux humains, rempli automatiquement par les bots. */}
+  <div class="contact-form__honeypot" aria-hidden="true">
+    <label for="website">Site internet (ne pas remplir)</label>
+    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
   <div class="contact-form__row">
     <div class="contact-form__field">
       <label for="name" class="contact-form__label">Nom complet <span aria-hidden="true">*</span></label>
@@ -217,6 +223,10 @@ const countries = [
         placeholder="Jean Dupont"
         required
         autocomplete="name"
+        minlength="2"
+        maxlength="80"
+        pattern="[A-Za-zÀ-ÖØ-öø-ÿ' \-\.]{2,80}"
+        title="Lettres, espaces, apostrophes et tirets uniquement (2 à 80 caractères)."
       />
     </div>
     <div class="contact-form__field">
@@ -229,6 +239,9 @@ const countries = [
         placeholder="jean@exemple.fr"
         required
         autocomplete="email"
+        maxlength="120"
+        pattern="[^@\s]+@[^@\s]+\.[^@\s]{2,}"
+        title="Adresse email valide (ex : jean@exemple.fr)."
       />
     </div>
   </div>
@@ -245,7 +258,7 @@ const countries = [
         >
           {countries.map(c => (
             <option value={c.code} selected={c.name === 'France'}>
-              {c.flag} {c.code} — {c.name}
+              {c.flag} {c.code} · {c.name}
             </option>
           ))}
         </select>
@@ -256,6 +269,9 @@ const countries = [
           class="contact-form__input"
           placeholder="6 12 34 56 78"
           autocomplete="tel-national"
+          maxlength="20"
+          pattern="[0-9 .\-]{6,20}"
+          title="Chiffres uniquement, séparés éventuellement par des espaces, points ou tirets."
         />
       </div>
     </div>
@@ -282,6 +298,7 @@ const countries = [
       class="contact-form__input"
       placeholder="Ex : Boulangerie Dupont"
       autocomplete="organization"
+      maxlength="120"
     />
   </div>
 
@@ -294,6 +311,8 @@ const countries = [
       placeholder="Décrivez votre projet, vos besoins, votre calendrier…"
       rows="6"
       required
+      minlength="10"
+      maxlength="3000"
     ></textarea>
   </div>
 
@@ -318,6 +337,16 @@ const countries = [
     display: flex;
     flex-direction: column;
     gap: var(--spacing-sm);
+  }
+
+  /* Honeypot : invisible aux humains, capturé par les bots qui remplissent tous les champs. */
+  .contact-form__honeypot {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 
   .contact-form__row {
@@ -469,13 +498,13 @@ const countries = [
    * ------------------------------------------------------------------ */
   const messageTemplates: Record<string, string> = {
     // ----- Site vitrine -----
-    'vitrine-essentiel': `Bonjour,\n\nJe suis intéressé(e) par votre Pack Essentiel (Site vitrine — 499 € HT). Je souhaiterais créer une présence web claire et efficace pour mon activité.\n\nPourriez-vous me recontacter afin que nous échangions sur mon projet et les prochaines étapes ?\n\nMerci par avance.`,
-    'vitrine-artisan':   `Bonjour,\n\nJe suis intéressé(e) par votre Pack Artisan (Site vitrine — 999 € HT). J'aimerais valoriser mes services et réalisations en ligne avec un site bien structuré et optimisé pour le référencement local.\n\nPourriez-vous me recontacter pour discuter de mon projet ?\n\nMerci par avance.`,
-    'vitrine-signature': `Bonjour,\n\nJe suis intéressé(e) par votre Pack Signature (Site vitrine — 1 999 € HT). Je souhaite une présence web ambitieuse avec blog, pages par prestation et éventuellement prise de rendez-vous en ligne.\n\nPourriez-vous me recontacter pour étudier mon projet plus en détail ?\n\nMerci par avance.`,
+    'vitrine-essentiel': `Bonjour,\n\nJe suis intéressé(e) par votre Pack Essentiel (Site vitrine, 499 € HT). Je souhaiterais créer une présence web claire et efficace pour mon activité.\n\nPourriez-vous me recontacter afin que nous échangions sur mon projet et les prochaines étapes ?\n\nMerci par avance.`,
+    'vitrine-artisan':   `Bonjour,\n\nJe suis intéressé(e) par votre Pack Artisan (Site vitrine, 999 € HT). J'aimerais valoriser mes services et réalisations en ligne avec un site bien structuré et optimisé pour le référencement local.\n\nPourriez-vous me recontacter pour discuter de mon projet ?\n\nMerci par avance.`,
+    'vitrine-signature': `Bonjour,\n\nJe suis intéressé(e) par votre Pack Signature (Site vitrine, 1 999 € HT). Je souhaite une présence web ambitieuse avec blog, pages par prestation et éventuellement prise de rendez-vous en ligne.\n\nPourriez-vous me recontacter pour étudier mon projet plus en détail ?\n\nMerci par avance.`,
 
     // ----- E-commerce -----
-    'ecommerce-pro':     `Bonjour,\n\nJe suis intéressé(e) par votre offre Shop Pro (E-commerce — 999 € HT). Je souhaite vendre mes produits en ligne avec un catalogue de 10 à 30 références et un paiement sécurisé.\n\nPourriez-vous me recontacter pour échanger sur mon projet ?\n\nMerci par avance.`,
-    'ecommerce-premium': `Bonjour,\n\nJe suis intéressé(e) par votre offre Shop Premium (E-commerce — 1 799 € HT). J'ai besoin d'une boutique en ligne complète avec catalogue étendu, livraison multi-mode et outils de fidélisation.\n\nPourriez-vous me recontacter pour en discuter ?\n\nMerci par avance.`,
+    'ecommerce-pro':     `Bonjour,\n\nJe suis intéressé(e) par votre offre Shop Pro (E-commerce, 999 € HT). Je souhaite vendre mes produits en ligne avec un catalogue de 10 à 30 références et un paiement sécurisé.\n\nPourriez-vous me recontacter pour échanger sur mon projet ?\n\nMerci par avance.`,
+    'ecommerce-premium': `Bonjour,\n\nJe suis intéressé(e) par votre offre Shop Premium (E-commerce, 1 799 € HT). J'ai besoin d'une boutique en ligne complète avec catalogue étendu, livraison multi-mode et outils de fidélisation.\n\nPourriez-vous me recontacter pour en discuter ?\n\nMerci par avance.`,
 
     // ----- Refonte -----
     'refonte-rafraichissement': `Bonjour,\n\nJe souhaite un rafraîchissement de mon site actuel (offre à 399 € HT). La structure fonctionne mais le design mériterait d'être modernisé.\n\nPourriez-vous me recontacter pour évaluer mon besoin ?\n\nMerci par avance.`,
@@ -519,8 +548,40 @@ const countries = [
     if (packInput && pack) packInput.value = pack;
   }
 
+  /* ----- Sécurité formulaire ------------------------------------------- */
+  /** Empêche les soumissions multiples rapprochées (anti-flood, anti-double-clic). */
+  const MIN_INTERVAL_MS = 8000;
+  let lastSubmit = 0;
+  /** Empêche un envoi instantané au chargement (signe d'un bot). */
+  const formReadyAt = Date.now();
+  const MIN_FILL_TIME_MS = 1500;
+
+  /** Retire caracteres de controle, normalise les espaces, applique une limite stricte. */
+  const sanitize = (value: string, max: number): string => {
+    // eslint-disable-next-line no-control-regex
+    const stripped = value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '');
+    return stripped.trim().slice(0, max);
+  };
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    /* 1. Honeypot : si rempli, c'est un bot, on simule un succès silencieux */
+    const honeypot = (document.getElementById('website') as HTMLInputElement | null)?.value || '';
+    if (honeypot.trim() !== '') {
+      form.reset();
+      success.hidden = false;
+      return;
+    }
+
+    /* 2. Anti-flood */
+    const now = Date.now();
+    if (now - formReadyAt < MIN_FILL_TIME_MS || now - lastSubmit < MIN_INTERVAL_MS) {
+      alert('Merci de patienter quelques secondes avant de réessayer.');
+      return;
+    }
+
+    /* 3. Validation HTML5 */
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
@@ -530,25 +591,32 @@ const countries = [
     btnLabel.hidden = true;
     btnLoad.hidden = false;
 
-    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+    const raw = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
 
-    // Combine le code pays au numéro de téléphone (si saisi)
-    if (data.phone && data.phone.trim()) {
-      const countryCode = data.phoneCountry || '+33';
-      data.phone = `${countryCode} ${data.phone.trim()}`;
-    } else {
-      data.phone = '';
+    /* 4. Sanitisation + limites de longueur */
+    const data = {
+      name:        sanitize(raw.name        || '', 80),
+      email:       sanitize(raw.email       || '', 120),
+      phone:       sanitize(raw.phone       || '', 20),
+      phoneCountry: sanitize(raw.phoneCountry || '+33', 6),
+      company:     sanitize(raw.company     || '', 120),
+      projectType: sanitize(raw.projectType || '', 30),
+      message:     sanitize(raw.message     || '', 3000),
+    };
+
+    if (data.phone) {
+      data.phone = `${data.phoneCountry} ${data.phone}`;
     }
 
     try {
       const payload = {
         access_key: 'b2d398de-9e03-4bc2-a50e-60bc1af2da51',
-        subject: `Nouvelle demande de contact — CapWeb (${data.projectType || 'Non précisé'})`,
+        subject: `Nouvelle demande de contact · CapWeb (${data.projectType || 'Non précisé'})`,
         from_name: data.name,
         email: data.email,
-        phone: data.phone || '—',
-        company: data.company || '—',
-        project_type: data.projectType || '—',
+        phone: data.phone || 'Non renseigné',
+        company: data.company || 'Non renseigné',
+        project_type: data.projectType || 'Non renseigné',
         message: data.message,
       };
 
@@ -561,6 +629,7 @@ const countries = [
       const json = await res.json();
 
       if (json.success) {
+        lastSubmit = Date.now();
         form.reset();
         success.hidden = false;
         success.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

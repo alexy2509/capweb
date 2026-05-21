@@ -10,8 +10,18 @@ const currentPath = Astro.url.pathname;
 
 <header class="header" id="header">
   <div class="container header__inner">
-    <a href="/" class="header__logo" aria-label="CapWeb — Accueil">
-      <img src="/logo.png" alt="CapWeb" width="220" height="38" />
+    <a href="/" class="header__logo" aria-label="Accueil CapWeb">
+      <picture>
+        <source srcset="/logo.webp" type="image/webp" />
+        <img
+          src="/logo.png"
+          alt="CapWeb"
+          width="220"
+          height="38"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
     </a>
 
     <nav class="header__nav" id="nav" aria-label="Navigation principale">

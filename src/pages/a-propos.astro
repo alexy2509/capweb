@@ -7,7 +7,7 @@ const values = [
   {
     icon: '❋',
     title: 'Proximité',
-    text: "Chaque client est unique. Nous prenons le temps de comprendre votre métier, votre vision, vos contraintes — avant de taper la moindre ligne de code.",
+    text: "Chaque client est unique. Nous prenons le temps de comprendre votre métier, votre vision, vos contraintes, avant de taper la moindre ligne de code.",
   },
   {
     icon: '◇',
@@ -17,7 +17,7 @@ const values = [
   {
     icon: '➤',
     title: 'Réactivité',
-    text: "Un besoin, un doute, une modification ? Nous répondons vite. Parce qu'un site vit, respire, évolue — et nous devons avancer au rythme du vôtre.",
+    text: "Un besoin, un doute, une modification ? Nous répondons vite. Parce qu'un site vit, respire, évolue. Nous devons avancer au rythme du vôtre.",
   },
   {
     icon: '↗',
@@ -50,7 +50,7 @@ const team = [
     name: "L'accompagnement",
     role: 'Support & Suivi client',
     initials: '❤',
-    bio: "La plus belle partie du projet commence après la mise en ligne. Nous restons là, joignables, réactifs, prêts à faire évoluer votre site quand vous en avez besoin — 5 jours sur 7, avec chaque demande traitée sous 24 heures.",
+    bio: "La plus belle partie du projet commence après la mise en ligne. Nous restons là, joignables, réactifs, prêts à faire évoluer votre site quand vous en avez besoin, 5 jours sur 7, avec chaque demande traitée sous 24 heures.",
   },
 ];
 
@@ -65,7 +65,7 @@ const process = [
 ---
 
 <BaseLayout
-  title="À propos — Agence web à Quimper, en Bretagne | CapWeb"
+  title="À propos · Agence web à Quimper, en Bretagne | CapWeb"
   description="CapWeb est une agence web bretonne basée à Quimper. Nous créons facilement des sites internet pas chers et performants pour les artisans et entreprises du Finistère et de toute la Bretagne. Proximité, transparence, réactivité."
   keywords="agence web Quimper, agence web Bretagne, agence web Finistère, créateur site internet Bretagne, agence digitale Quimper"
 >
@@ -94,14 +94,18 @@ const process = [
       <div class="container story">
         <div class="story__visual" aria-hidden="true">
           <div class="story__image-block">
-            <img
-              src="/nouveau-logo.jpg"
-              alt="CapWeb — Logo de l'agence web"
-              class="story__image"
-              width="780"
-              height="1040"
-              loading="lazy"
-            />
+            <picture>
+              <source srcset="/nouveau-logo.webp" type="image/webp" />
+              <img
+                src="/nouveau-logo.jpg"
+                alt="Logo de l'agence web CapWeb"
+                class="story__image"
+                width="780"
+                height="1040"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <div class="story__image-badge">
               <span class="story__badge-year">BZH</span>
               <span class="story__badge-label">Made in Bretagne</span>
@@ -136,7 +140,7 @@ const process = [
       </div>
     </section>
 
-    <!-- ========== PROMESSE — SECTION PHARE ========== -->
+    <!-- ========== PROMESSE · SECTION PHARE ========== -->
     <section class="section promise section-alt" aria-labelledby="promise-title">
       <div class="container">
         <header class="section-header centered">
@@ -272,7 +276,7 @@ const process = [
             </h2>
             <p class="approach__intro">
               Pas de boîte noire. Chaque étape est partagée, discutée, validée avec
-              vous. Vous n'êtes jamais spectateur — vous êtes acteur de votre projet.
+              vous. Vous n'êtes jamais spectateur, vous êtes acteur de votre projet.
             </p>
           </div>
           <ol class="process-steps">
@@ -316,7 +320,7 @@ const process = [
             <em>Nous ne l'oublions jamais.</em>
           </p>
           <p>
-            C'est pour cela que nous restons là — avant, pendant, et longtemps après
+            C'est pour cela que nous restons là : avant, pendant, et longtemps après
             la mise en ligne. Parce qu'un site web, ce n'est pas un livrable. C'est
             une histoire qui commence, et qu'on a envie d'écrire avec vous, page après page.
           </p>

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import CookieConsent from '../components/CookieConsent.astro';
 
 export interface Props {
   title: string;
@@ -30,7 +31,7 @@ const businessSchema = {
   '@type': 'ProfessionalService',
   '@id': `${SITE.origin}/#business`,
   name: 'CapWeb',
-  alternateName: 'CapWeb — Création de sites internet',
+  alternateName: 'CapWeb · Création de sites internet',
   description: 'Agence web à Quimper, dans le Finistère. Création de sites internet sur-mesure pour artisans, commerçants, indépendants et PME en Bretagne.',
   url: SITE.origin,
   logo: `${SITE.origin}/logo.png`,
@@ -86,9 +87,9 @@ const websiteSchema = {
     <meta name="theme-color" content="#0E0604" />
     <meta name="format-detection" content="telephone=yes" />
 
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
+    <link rel="icon" href="/favicon.png?v=3" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
@@ -106,7 +107,7 @@ const websiteSchema = {
     <meta property="og:title"       content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image"       content={ogImage} />
-    <meta property="og:image:alt"   content="CapWeb — Création de sites internet à Quimper, Finistère, Bretagne" />
+    <meta property="og:image:alt"   content="CapWeb · Création de sites internet à Quimper, Finistère, Bretagne" />
     <meta property="og:url"         content={canonicalURL} />
     <meta property="og:type"        content={type} />
     <meta property="og:locale"      content="fr_FR" />
@@ -118,8 +119,24 @@ const websiteSchema = {
 
     <link rel="sitemap" href="/sitemap.xml" />
 
+    <!-- Précharge LCP : le logo en haut de page -->
+    <link rel="preload" as="image" href="/logo.webp" type="image/webp" fetchpriority="high" />
+
+    <!-- Polices : préconnexion + chargement non bloquant -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap"
+      />
+    </noscript>
 
     {isHome && (
       <Fragment>
@@ -130,5 +147,6 @@ const websiteSchema = {
   </head>
   <body>
     <slot />
+    <CookieConsent />
   </body>
 </html>

@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Polices chargées via <link rel="stylesheet"> dans BaseLayout pour éviter le render-blocking. */
 
 :root {
-  /* Couleurs — palette dégradée orange / rose / corail */
+  /* Couleurs · palette dégradée orange / rose / corail */
   --color-primary:        #FF6B2C;   /* Orange signature */
   --color-primary-light:  #FF9259;
   --color-secondary:      #FF2E7E;   /* Rose magenta vif */
@@ -23,7 +23,7 @@
   --gradient-soft:      linear-gradient(135deg, rgba(255,107,44,0.08) 0%, rgba(255,46,126,0.08) 100%);
   --gradient-text:      linear-gradient(135deg, #FF6B2C 0%, #FF2E7E 100%);
 
-  /* Typographie — moderne, élégante, contemporaine */
+  /* Typographie · moderne, élégante, contemporaine */
   --font-heading: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
   --font-body:    'Inter', system-ui, sans-serif;
 
@@ -34,7 +34,7 @@
   --spacing-lg:  4rem;
   --spacing-xl:  8rem;
 
-  /* Rayons de bordure — plus généreux pour un look moderne */
+  /* Rayons de bordure · plus généreux pour un look moderne */
   --radius-sm: 6px;
   --radius-md: 14px;
   --radius-lg: 24px;
@@ -141,9 +141,8 @@ img {
   color: transparent;
 }
 
-.text-muted   { color: var(--color-text-muted); }
-.text-light   { color: var(--color-text-light); }
-.text-center  { text-align: center; }
+.text-muted { color: var(--color-text-muted); }
+.text-light { color: var(--color-text-light); }
 
 /* ---- Boutons ---- */
 
@@ -264,27 +263,7 @@ img {
   margin-inline: auto;
 }
 
-/* ---- Grilles ---- */
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-md);
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-md);
-}
-
-.grid-4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-md);
-}
-
-/* ---- Animations d'entrée ---- */
+/* ---- Animations ---- */
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -296,10 +275,6 @@ img {
   50%      { background-position: 100% 50%; }
 }
 
-.fade-up {
-  animation: fadeUp 0.7s ease both;
-}
-
 /* ---- Sélection texte ---- */
 ::selection {
   background: var(--color-primary);
@@ -308,15 +283,7 @@ img {
 
 /* ---- Responsive ---- */
 
-@media (max-width: 1024px) {
-  .grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .grid-3 { grid-template-columns: repeat(2, 1fr); }
-}
-
 @media (max-width: 768px) {
   :root { --spacing-xl: 5rem; --spacing-lg: 3rem; }
-  .grid-4,
-  .grid-3,
-  .grid-2 { grid-template-columns: 1fr; }
   .section { padding: var(--spacing-xl) 0; }
 }

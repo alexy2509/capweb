@@ -10,7 +10,12 @@ const services = [
     label: 'Site vitrine',
     title: 'Votre carte de visite',
     titleAccent: 'digitale parfaite',
-    description: "Un site vitrine bien conçu est votre meilleur commercial. Il travaille pour vous 24h/24, rassure vos prospects et les pousse à vous contacter. Du site simple à la vitrine la plus avancée — nous adaptons tout à votre ambition.",
+    description: "Un site vitrine bien conçu est votre meilleur commercial. Il travaille pour vous 24h/24, rassure vos prospects et les pousse à vous contacter. Du site simple à la vitrine la plus avancée. Nous adaptons tout à votre ambition.",
+    marqueeRows: [
+      ['Restaurant', 'Coiffeur', 'Plombier', 'Photographe', 'Architecte', 'Avocat', 'Boulangerie', 'Fleuriste', 'Studio yoga', 'Décorateur'],
+      ['Cabinet dentaire', 'Notaire', 'Coach sportif', 'Garage', 'Maçon', 'Électricien', 'Spa', 'Auto-école', 'Médecin', 'Kiné'],
+      ['Artisan d’art', 'Tatoueur', 'Bijoutier', 'Esthéticienne', 'Toiletteur', 'Paysagiste', 'Menuisier', 'Conciergerie', 'Hôtel', 'Gîte'],
+    ],
     features: [
       'De 1 à 15 pages selon vos besoins (accueil, services, réalisations, témoignages, contact, blog…)',
       'Design unique adapté à votre identité visuelle',
@@ -34,7 +39,12 @@ const services = [
     label: 'E-commerce',
     title: 'Vendez en ligne,',
     titleAccent: 'sans limite',
-    description: "Une boutique en ligne qui donne envie d'acheter. Interface intuitive, processus de commande fluide, paiement sécurisé et outils de gestion puissants — pour que vous puissiez vous concentrer sur votre cœur de métier.",
+    description: "Une boutique en ligne qui donne envie d'acheter. Interface intuitive, processus de commande fluide, paiement sécurisé et outils de gestion puissants, pour que vous puissiez vous concentrer sur votre cœur de métier.",
+    marqueeRows: [
+      ['Vêtements', 'Bijoux', 'Cosmétiques', 'Décoration', 'Maroquinerie', 'Lunettes', 'Chaussures', 'Accessoires'],
+      ['Épicerie fine', 'Vins & spiritueux', 'Café torréfié', 'Chocolats', 'Pâtisserie', 'Produits locaux', 'Bio & vrac'],
+      ['Artisanat d’art', 'Mobilier', 'Plantes', 'Bougies', 'Papeterie', 'Jouets', 'Livres', 'Sport & outdoor'],
+    ],
     features: [
       'Boutique en ligne adaptée à votre catalogue (jusqu\'à 50 produits)',
       'Base WooCommerce ou Shopify selon vos besoins',
@@ -59,6 +69,11 @@ const services = [
     title: 'Modernisez votre site,',
     titleAccent: 'boostez vos résultats',
     description: "Votre site actuel vous freine ? Trop lent, pas adapté au mobile, design vieilli ? Nous analysons l'existant, conservons ce qui fonctionne et transformons le reste pour un site moderne, performant et orienté conversion.",
+    marqueeRows: [
+      ['Design 2026', 'Mobile-first', 'Plus rapide', 'Mieux référencé', 'Identité affirmée', 'UX repensée'],
+      ['Code propre', 'Performance', 'Conversion', 'Accessibilité', 'Sécurité renforcée', 'SEO préservé'],
+      ['Charte rafraîchie', 'Hiérarchie claire', 'Animations subtiles', 'Lighthouse > 90', 'CMS modernisé'],
+    ],
     features: [
       'Audit complet de votre site actuel (performance, SEO, UX)',
       'Rafraîchissement design ou refonte complète selon vos besoins',
@@ -79,6 +94,11 @@ const services = [
     title: 'Première page Google,',
     titleAccent: 'clients garantis',
     description: "Le meilleur site web ne vaut rien s'il est invisible. Notre stratégie SEO combine optimisation technique, contenu de qualité et netlinking pour vous positionner durablement sur vos mots-clés stratégiques.",
+    marqueeRows: [
+      ['Top 3 Google', 'Trafic local', 'Visibilité', 'Plus de clients', 'Google Maps', 'Mots-clés stratégiques'],
+      ['Backlinks qualité', 'Contenu optimisé', 'Core Web Vitals', 'Schema.org', 'Google Business', 'Position #1'],
+      ['Rapports mensuels', 'SEO local', 'Audit technique', 'Avis clients', 'Trafic qualifié', 'Conversions'],
+    ],
     features: [
       'Audit SEO complet de votre site (technique, contenu, popularité)',
       'Stratégie de mots-clés sur-mesure adaptée à votre activité',
@@ -100,7 +120,7 @@ const services = [
 ---
 
 <BaseLayout
-  title="Services & tarifs — Création site internet pour artisans et entreprises | CapWeb"
+  title="Services & tarifs · Création site internet pour artisans et entreprises | CapWeb"
   description="Création de sites vitrines, e-commerce, refonte et référencement SEO local pour artisans, commerçants et PME en Bretagne. Tarifs transparents, sites pas chers et faciles à gérer. Quimper, Finistère, Bretagne."
   keywords="création site internet artisan, site vitrine pas cher, site e-commerce Bretagne, refonte site web Finistère, référencement local Quimper, agence web pas chère Bretagne"
 >
@@ -116,7 +136,7 @@ const services = [
         <p class="page-hero__sub">
           Quatre univers d'expertise pour donner vie à votre projet web.
           Des sites vitrine sur-mesure aux boutiques en ligne, en passant par les refontes
-          et le référencement — tout ce dont vous avez besoin, sous un seul toit.
+          et le référencement, tout ce dont vous avez besoin, sous un seul toit.
         </p>
         <nav class="page-hero__anchors" aria-label="Navigation des services">
           {services.map(s => (
@@ -161,6 +181,17 @@ const services = [
             </div>
             <div class="service__visual" aria-hidden="true">
               <div class="service__visual-card">
+                <div class="service__visual-marquee">
+                  {service.marqueeRows.map((row, rowIdx) => (
+                    <div class={`marquee marquee--${rowIdx % 2 === 0 ? 'left' : 'right'}`}>
+                      <div class="marquee__track">
+                        {[...row, ...row].map(item => (
+                          <span class="marquee__item">{item}</span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 <div class="service__visual-inner">
                   <span class="service__visual-num">{service.number}</span>
                   <span class="service__visual-label">{service.label}</span>
@@ -401,6 +432,83 @@ const services = [
     bottom: -10%;
     right: 25%;
     background: radial-gradient(circle, rgba(255,179,71,0.4) 0%, transparent 70%);
+  }
+
+  /* ---------- Carousels infinis (desktop uniquement) ---------- */
+  .service__visual-marquee {
+    position: absolute;
+    /* Laisse de la marge en bas pour le numéro + label */
+    inset: 0 0 26% 0;
+    z-index: 1;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.2rem;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  }
+
+  .marquee { overflow: hidden; width: 100%; }
+
+  .marquee__track {
+    display: inline-flex;
+    gap: 1.4rem;
+    white-space: nowrap;
+    will-change: transform;
+  }
+
+  .marquee--left  .marquee__track { animation: marqueeLeft  38s linear infinite; }
+  .marquee--right .marquee__track { animation: marqueeRight 46s linear infinite; }
+
+  .service__visual-marquee > .marquee:nth-child(2) .marquee__track { animation-duration: 52s; }
+  .service__visual-marquee > .marquee:nth-child(3) .marquee__track { animation-duration: 44s; animation-delay: -8s; }
+
+  .marquee__item {
+    flex-shrink: 0;
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    background: rgba(255, 248, 242, 0.10);
+    border: 1px solid rgba(255, 248, 242, 0.18);
+    color: rgba(255, 248, 242, 0.92);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  @keyframes marqueeLeft {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes marqueeRight {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+
+  /* Affiché uniquement au-dessus de 1024px (desktop) */
+  @media (min-width: 1025px) {
+    .service__visual-marquee { display: flex; }
+    /* En desktop, on atténue les orbes pour laisser respirer le carousel */
+    .service__visual-shape { opacity: 0.5; }
+    /* Et on rend l'overlay number/label moins envahissant */
+    .service__visual-inner {
+      background: linear-gradient(to top, rgba(14, 6, 4, 0.55), rgba(14, 6, 4, 0));
+      padding: 1rem;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      width: 100%;
+      margin: -var(--spacing-md);
+      margin-top: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none !important; }
   }
 
   /* ---------- CTA band ---------- */
