@@ -1,0 +1,66 @@
+# ============================================================================
+# CapWeb · Headers de sécurité et performance pour hébergement Apache (Hostinger)
+# ============================================================================
+
+# ----- Compression -----
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml application/xml text/xml
+</IfModule>
+
+# ----- Cache navigateur -----
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                              "access plus 1 month"
+  ExpiresByType text/html                     "access plus 0 seconds"
+  ExpiresByType text/css                      "access plus 1 year"
+  ExpiresByType application/javascript        "access plus 1 year"
+  ExpiresByType image/png                     "access plus 1 year"
+  ExpiresByType image/jpeg                    "access plus 1 year"
+  ExpiresByType image/webp                    "access plus 1 year"
+  ExpiresByType image/svg+xml                 "access plus 1 year"
+  ExpiresByType image/x-icon                  "access plus 1 year"
+  ExpiresByType font/woff2                    "access plus 1 year"
+  ExpiresByType application/xml               "access plus 1 day"
+</IfModule>
+
+# ----- Headers de sécurité -----
+<IfModule mod_headers.c>
+  # HSTS : force HTTPS pendant 2 ans, sous-domaines inclus, preloadable
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+  # Empêche le browser-side MIME-type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+
+  # Bloque le chargement du site dans une <iframe> tierce (protection clickjacking)
+  Header always set X-Frame-Options "SAMEORIGIN"
+
+  # Politique référent : on n'envoie l'URL complète qu'aux origines de confiance
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Restreint les permissions d'API navigateur (caméra, micro, GPS...)
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+
+  # CSP : interdit toute source non autorisée, mitige XSS et exfiltration
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.web3forms.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://api.web3forms.com; object-src 'none'; upgrade-insecure-requests"
+
+  # Désactive le cache pour les pages HTML (toujours fraîches)
+  <FilesMatch "\.(html)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Cache long pour les assets versionnés
+  <FilesMatch "\.(css|js|png|jpg|jpeg|webp|svg|woff2?|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# ----- Bloque l'accès aux fichiers sensibles -----
+<FilesMatch "^\.|\.(md|json|lock|log|env|bak|sql|sh|yml|yaml)$">
+  Require all denied
+</FilesMatch>
+
+# ----- Encodage par défaut -----
+AddDefaultCharset UTF-8
+
+# ----- Pages d'erreur -----
+ErrorDocument 404 /index.html
