@@ -136,6 +136,7 @@ const offers = [
         </div>
 
         <script is:inline>
+          /* L'orb code est sous le fold : on n'initialise qu'à la visibilité, en idle. */
           (() => {
             const code = document.getElementById('cta-orb-code');
             if (!code) return;
@@ -152,6 +153,7 @@ const offers = [
             ];
 
             let last = -1;
+            let interval = null;
             const swap = () => {
               let i;
               do { i = Math.floor(Math.random() * snippets.length); } while (i === last && snippets.length > 1);
@@ -165,8 +167,13 @@ const offers = [
               code.classList.add('is-typing');
             };
 
-            swap();
-            setInterval(swap, 5400);
+            const start = () => { if (interval) return; swap(); interval = setInterval(swap, 5400); };
+            const stop  = () => { if (interval) { clearInterval(interval); interval = null; } };
+
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach((e) => (e.isIntersecting ? start() : stop()));
+            }, { rootMargin: '200px' });
+            observer.observe(code);
           })();
         </script>
       </div>

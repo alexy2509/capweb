@@ -357,7 +357,8 @@
 </style>
 
 <script is:inline>
-  (() => {
+  /* Init différé pour ne pas peser sur le LCP / TBT. */
+  const __cbInit = () => {
     const flow = {
       start: {
         bot: '👋 Bonjour ! Je suis l\'assistant CapWeb. Comment puis-je vous aider ?',
@@ -521,5 +522,11 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !win.hidden) close();
     });
-  })();
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(__cbInit, { timeout: 2500 });
+  } else {
+    setTimeout(__cbInit, 600);
+  }
 </script>

@@ -20,8 +20,19 @@ const links = {
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__brand">
-      <a href="/" aria-label="CapWeb">
-        <img src="/logo.png" alt="CapWeb" width="260" height="45" class="footer__logo" />
+      <a href="/" aria-label="Accueil CapWeb">
+        <picture>
+          <source srcset="/logo.webp" type="image/webp" />
+          <img
+            src="/logo.png"
+            alt="CapWeb · création de sites internet à Quimper, Finistère, Bretagne"
+            width="260"
+            height="45"
+            class="footer__logo"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
       </a>
       <p class="footer__tagline">
         Votre présence en ligne,<br /><em>sublimée.</em>
