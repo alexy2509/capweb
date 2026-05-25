@@ -59,9 +59,9 @@
       type="text"
       id="cb-input-text"
       class="cb-input__field"
-      placeholder="Posez votre question…"
+      placeholder="Posez-moi votre question…"
       autocomplete="off"
-      maxlength="200"
+      maxlength="500"
       aria-label="Votre question"
     />
     <button type="submit" class="cb-input__send" aria-label="Envoyer">
@@ -527,7 +527,11 @@
       },
     };
 
-    /* Mots-clés pour matcher une question libre vers un noeud du flow. */
+    /* URL du proxy IA Cloudflare Worker. Si vide, fallback sur le matching FAQ. */
+    const AI_ENDPOINT = ''; // ⚠️ Coller ici l'URL retournée par "wrangler deploy"
+    const aiHistory = []; // { role: 'user' | 'assistant', content: string }
+
+    /* Mots-clés pour matcher une question libre vers un noeud du flow (fallback sans IA). */
     const keywordsMap = [
       { keys: ['tarif', 'prix', 'cout', 'coût', 'combien', 'budget', 'devis', 'euros', 'cher', 'gratuit'], step: 'tarifs' },
       { keys: ['delai', 'délai', 'temps', 'duree', 'durée', 'rapide', 'quand', 'semaine', 'mois', 'rapidement'], step: 'delais' },
@@ -661,18 +665,44 @@
     input.addEventListener('input', updateSendState);
     updateSendState();
 
+    /* Appel IA Claude via le worker Cloudflare. */
+    const askAI = async (text) => {
+      showTyping();
+      try {
+        const res = await fetch(AI_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history: aiHistory }),
+        });
+        const data = await res.json();
+        hideTyping();
+        const reply = data.reply || "Désolé, je n'ai pas pu obtenir de réponse.";
+        addBotMessage(reply);
+        aiHistory.push({ role: 'user', content: text });
+        aiHistory.push({ role: 'assistant', content: reply });
+        if (aiHistory.length > 6) aiHistory.splice(0, aiHistory.length - 6);
+      } catch {
+        hideTyping();
+        addBotMessage('L\'assistant rencontre un souci de connexion. Vous pouvez nous écrire à <a href="mailto:contact@capweb.pro">contact@capweb.pro</a> ou utiliser <a href="/contact">le formulaire</a>.');
+      }
+    };
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const text = input.value.trim().slice(0, 200);
+      const text = input.value.trim().slice(0, 500);
       if (!text) return;
       addUserMessage(text);
       input.value = '';
       updateSendState();
+      if (AI_ENDPOINT) {
+        askAI(text);
+        return;
+      }
+      /* Fallback FAQ par mots-clés (si pas d'IA branchée). */
       const match = matchKeywords(text);
       if (match) {
         renderStep(match);
       } else {
-        /* Fallback : réponse polie + propose les sujets connus. */
         showTyping();
         setTimeout(() => {
           hideTyping();

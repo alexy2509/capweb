@@ -1,0 +1,21 @@
+name = "capweb-chatbot"
+main = "src/index.js"
+compatibility_date = "2026-05-21"
+
+# ⚠️ Avant de déployer :
+# 1. Crée un namespace KV nommé "RATE_LIMIT" :
+#      npx wrangler kv namespace create RATE_LIMIT
+#    Récupère l'ID retourné et colle-le ci-dessous.
+# 2. Ajoute ta clé API Anthropic en secret :
+#      npx wrangler secret put ANTHROPIC_API_KEY
+# 3. (Optionnel) ajoute un sel de hash IP en secret :
+#      npx wrangler secret put RATE_LIMIT_SALT
+# 4. Déploie :
+#      npx wrangler deploy
+
+[vars]
+ALLOWED_ORIGINS = "https://capweb.pro,https://www.capweb.pro"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
