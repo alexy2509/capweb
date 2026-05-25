@@ -1,0 +1,525 @@
+---
+/**
+ * ChatBot · assistant FAQ statique, sans backend ni cookies.
+ *
+ * Arbre de décision : l'utilisateur clique sur une question,
+ * le bot répond instantanément et propose des suivis pertinents.
+ * Aucune donnée n'est envoyée — tout reste dans le navigateur.
+ */
+---
+
+<button
+  type="button"
+  id="cb-toggle"
+  class="cb-toggle"
+  aria-label="Ouvrir l'assistant CapWeb"
+  aria-expanded="false"
+  aria-controls="cb-window"
+>
+  <svg class="cb-toggle__icon cb-toggle__icon--chat" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M4 5.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H10l-4 4v-4H6a2 2 0 0 1-2-2v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+    <circle cx="9" cy="10" r="1" fill="currentColor"/>
+    <circle cx="12" cy="10" r="1" fill="currentColor"/>
+    <circle cx="15" cy="10" r="1" fill="currentColor"/>
+  </svg>
+  <svg class="cb-toggle__icon cb-toggle__icon--close" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <span class="cb-toggle__pulse" aria-hidden="true"></span>
+</button>
+
+<aside
+  id="cb-window"
+  class="cb-window"
+  role="dialog"
+  aria-labelledby="cb-title"
+  hidden
+>
+  <header class="cb-header">
+    <div class="cb-header__avatar" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M3 4.5a1.5 1.5 0 0 1 1.5-1.5h15A1.5 1.5 0 0 1 21 4.5v11a1.5 1.5 0 0 1-1.5 1.5H10l-5 4v-4H4.5A1.5 1.5 0 0 1 3 15.5v-11Z" fill="currentColor"/>
+      </svg>
+    </div>
+    <div class="cb-header__info">
+      <h2 id="cb-title" class="cb-header__title">Assistant CapWeb</h2>
+      <p class="cb-header__status"><span class="cb-header__dot"></span> En ligne · réponse immédiate</p>
+    </div>
+    <button type="button" class="cb-header__close" aria-label="Fermer" data-cb-close>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <div id="cb-stream" class="cb-stream" role="log" aria-live="polite" aria-atomic="false"></div>
+
+  <footer class="cb-footer">
+    <a href="/contact" class="cb-footer__cta">Demander un devis gratuit</a>
+    <p class="cb-footer__note">Bot automatique · réponses pré-écrites. Pour un échange personnalisé, contactez-nous.</p>
+  </footer>
+</aside>
+
+<style>
+  /* ---- Bouton flottant ---- */
+  .cb-toggle {
+    position: fixed;
+    z-index: 950;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: var(--color-text-light);
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 46, 126, 0.35), 0 0 0 1px rgba(255, 248, 242, 0.08);
+    display: grid;
+    place-items: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .cb-toggle:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(255, 46, 126, 0.45); }
+
+  .cb-toggle__icon {
+    grid-area: 1 / 1;
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: opacity 0.2s ease, transform 0.25s ease;
+  }
+
+  .cb-toggle__icon--close { opacity: 0; transform: rotate(-45deg); }
+
+  .cb-toggle.is-open .cb-toggle__icon--chat { opacity: 0; transform: rotate(45deg); }
+  .cb-toggle.is-open .cb-toggle__icon--close { opacity: 1; transform: rotate(0); }
+
+  /* Pulse subtil pour attirer l'œil au repos */
+  .cb-toggle__pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    opacity: 0.45;
+    animation: cbPulse 2.6s ease-out infinite;
+    z-index: -1;
+  }
+
+  .cb-toggle.is-open .cb-toggle__pulse { display: none; }
+
+  @keyframes cbPulse {
+    0%   { transform: scale(1);   opacity: 0.45; }
+    70%  { transform: scale(1.5); opacity: 0; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+
+  /* ---- Fenêtre du chat ---- */
+  .cb-window {
+    position: fixed;
+    z-index: 949;
+    right: 1.25rem;
+    bottom: 5.5rem;
+    width: min(380px, calc(100vw - 2rem));
+    max-height: min(560px, calc(100dvh - 7rem));
+    background: var(--color-bg);
+    color: var(--color-text);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--color-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform-origin: bottom right;
+    animation: cbOpen 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .cb-window[hidden] { display: none; }
+
+  @keyframes cbOpen {
+    from { opacity: 0; transform: translateY(12px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ---- Header ---- */
+  .cb-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    background: var(--gradient-warm);
+    color: var(--color-text-light);
+  }
+
+  .cb-header__avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: rgba(255, 248, 242, 0.18);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .cb-header__avatar svg { width: 1.25rem; height: 1.25rem; color: var(--color-text-light); }
+
+  .cb-header__info { flex: 1; min-width: 0; }
+
+  .cb-header__title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--color-text-light);
+  }
+
+  .cb-header__status {
+    font-size: 0.72rem;
+    margin: 0.1rem 0 0;
+    color: rgba(255, 248, 242, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .cb-header__dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ADE80;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.25);
+  }
+
+  .cb-header__close {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.15);
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background-color 0.2s ease;
+  }
+
+  .cb-header__close:hover { background: rgba(0, 0, 0, 0.3); }
+
+  /* ---- Stream messages ---- */
+  .cb-stream {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background: var(--color-bg-alt);
+    scroll-behavior: smooth;
+  }
+
+  .cb-msg {
+    max-width: 88%;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    border-radius: 14px;
+    animation: cbMsgIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    word-wrap: break-word;
+  }
+
+  @keyframes cbMsgIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .cb-msg--bot {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-bottom-left-radius: 4px;
+    color: var(--color-text);
+  }
+
+  .cb-msg--user {
+    align-self: flex-end;
+    background: var(--gradient-primary);
+    color: var(--color-text-light);
+    border-bottom-right-radius: 4px;
+  }
+
+  .cb-msg strong { font-weight: 600; color: inherit; }
+  .cb-msg a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 2px; }
+  .cb-msg--user a { color: var(--color-text-light); }
+  .cb-msg ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+  .cb-msg li { margin-bottom: 0.2rem; }
+
+  /* Indicateur de frappe */
+  .cb-typing {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    padding: 0.55rem 0.8rem;
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .cb-typing span {
+    width: 6px;
+    height: 6px;
+    background: var(--color-text-muted);
+    border-radius: 50%;
+    animation: cbDot 1.2s ease-in-out infinite;
+  }
+
+  .cb-typing span:nth-child(2) { animation-delay: 0.15s; }
+  .cb-typing span:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes cbDot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+    30%           { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* ---- Boutons de choix ---- */
+  .cb-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .cb-choice {
+    text-align: left;
+    padding: 0.55rem 0.85rem;
+    background: white;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .cb-choice:hover,
+  .cb-choice:focus-visible {
+    border-color: var(--color-primary);
+    background: rgba(255, 107, 44, 0.06);
+    outline: none;
+    transform: translateX(2px);
+  }
+
+  /* ---- Footer ---- */
+  .cb-footer {
+    padding: 0.75rem 1rem 0.9rem;
+    background: white;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .cb-footer__cta {
+    display: inline-block;
+    padding: 0.55rem 1.2rem;
+    background: var(--gradient-primary);
+    color: var(--color-text-light);
+    text-decoration: none;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cb-footer__cta:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255, 46, 126, 0.3); }
+
+  .cb-footer__note {
+    margin: 0.4rem 0 0;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width: 560px) {
+    .cb-toggle { right: 1rem; bottom: 1rem; width: 3.2rem; height: 3.2rem; }
+    .cb-window {
+      right: 0.5rem;
+      bottom: 4.5rem;
+      width: calc(100vw - 1rem);
+      max-height: calc(100dvh - 6rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cb-toggle__pulse,
+    .cb-msg,
+    .cb-window { animation: none; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const flow = {
+      start: {
+        bot: '👋 Bonjour ! Je suis l\'assistant CapWeb. Comment puis-je vous aider ?',
+        choices: [
+          { label: '💼 Vos services et offres', next: 'services' },
+          { label: '💶 Tarifs et budget', next: 'tarifs' },
+          { label: '⏱️ Délais de réalisation', next: 'delais' },
+          { label: '🛠️ Comment se passe un projet', next: 'process' },
+          { label: '📍 Où êtes-vous basés ?', next: 'localisation' },
+          { label: '📞 Parler à un humain', next: 'contact' },
+        ],
+      },
+      services: {
+        bot: 'Nous proposons 4 prestations principales :<ul><li><strong>Site vitrine</strong> · présence en ligne élégante</li><li><strong>E-commerce</strong> · boutique en ligne complète</li><li><strong>Refonte</strong> · moderniser un site existant</li><li><strong>Référencement SEO</strong> · sortir sur Google</li></ul><a href="/services">Voir le détail des offres →</a>',
+        choices: [
+          { label: '💶 Combien ça coûte ?', next: 'tarifs' },
+          { label: '⏱️ Combien de temps ?', next: 'delais' },
+          { label: '🛠️ Comment ça se passe ?', next: 'process' },
+          { label: '↺ Autres questions', next: 'start' },
+        ],
+      },
+      tarifs: {
+        bot: 'Tout dépend de votre projet et de vos besoins. À titre indicatif :<ul><li><strong>Site vitrine</strong> · à partir de 499 € HT</li><li><strong>E-commerce</strong> · à partir de 999 € HT</li><li><strong>Refonte</strong> · à partir de 399 € HT</li><li><strong>SEO mensuel</strong> · sur devis</li></ul>Premier échange et devis gratuits, sans engagement.',
+        choices: [
+          { label: '🧾 Demander un devis', next: 'contact' },
+          { label: '💼 Voir tous les services', next: 'services' },
+          { label: '⏱️ Délais ?', next: 'delais' },
+          { label: '↺ Autres questions', next: 'start' },
+        ],
+      },
+      delais: {
+        bot: 'Nos délais standards après validation du devis et réception de l\'acompte :<ul><li><strong>Site vitrine</strong> · ~1 semaine</li><li><strong>E-commerce</strong> · ~2 semaines</li><li><strong>Refonte</strong> · ~1 semaine</li><li><strong>Mise en place SEO</strong> · 1 à 2 semaines</li></ul>Demandes traitées sous <strong>48h</strong>.',
+        choices: [
+          { label: '🛠️ Comment ça se passe ?', next: 'process' },
+          { label: '💶 Tarifs ?', next: 'tarifs' },
+          { label: '🧾 Demander un devis', next: 'contact' },
+          { label: '↺ Autres questions', next: 'start' },
+        ],
+      },
+      process: {
+        bot: 'Notre process en 4 étapes :<ul><li><strong>1. Échange gratuit</strong> · on comprend votre projet</li><li><strong>2. Devis détaillé sous 48h</strong> · transparent, sans surprise</li><li><strong>3. Création</strong> · maquette, développement, ajustements</li><li><strong>4. Mise en ligne + formation</strong> · vous gérez votre site</li></ul>Accompagnement <strong>5j/7</strong>, premier mois de suivi offert.',
+        choices: [
+          { label: '🧾 Commencer un projet', next: 'contact' },
+          { label: '💶 Tarifs ?', next: 'tarifs' },
+          { label: '⏱️ Délais ?', next: 'delais' },
+          { label: '↺ Autres questions', next: 'start' },
+        ],
+      },
+      localisation: {
+        bot: 'Nous sommes basés à <strong>Quimper</strong>, dans le <strong>Finistère</strong>. Nous intervenons en priorité en Bretagne, mais aussi partout en France à distance — la majorité de nos échanges se font en visio.',
+        choices: [
+          { label: '🧾 Demander un devis', next: 'contact' },
+          { label: '💼 Voir nos services', next: 'services' },
+          { label: '↺ Autres questions', next: 'start' },
+        ],
+      },
+      contact: {
+        bot: 'Plusieurs façons de nous joindre :<ul><li>📧 <a href="mailto:contact@capweb.pro">contact@capweb.pro</a></li><li>📞 <a href="tel:+33781822821">+33 7 81 82 28 21</a></li><li>📝 <a href="/contact">Formulaire de devis</a> (réponse sous 48h)</li></ul>Premier échange offert, sans engagement.',
+        choices: [
+          { label: '📝 Aller au formulaire', next: 'goto-contact' },
+          { label: '↺ Autres questions', next: 'start' },
+        ],
+      },
+    };
+
+    const toggle = document.getElementById('cb-toggle');
+    const win    = document.getElementById('cb-window');
+    const stream = document.getElementById('cb-stream');
+
+    let opened = false;
+
+    const open = () => {
+      win.hidden = false;
+      toggle.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Fermer l\'assistant CapWeb');
+      if (!opened) {
+        opened = true;
+        renderStep('start');
+      }
+    };
+
+    const close = () => {
+      win.hidden = true;
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Ouvrir l\'assistant CapWeb');
+    };
+
+    const escape = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+    const addBotMessage = (html) => {
+      const el = document.createElement('div');
+      el.className = 'cb-msg cb-msg--bot';
+      el.innerHTML = html; /* HTML pré-écrit par nous, contrôlé */
+      stream.appendChild(el);
+      stream.scrollTop = stream.scrollHeight;
+    };
+
+    const addUserMessage = (text) => {
+      const el = document.createElement('div');
+      el.className = 'cb-msg cb-msg--user';
+      el.textContent = text;
+      stream.appendChild(el);
+      stream.scrollTop = stream.scrollHeight;
+    };
+
+    const showTyping = () => {
+      const el = document.createElement('div');
+      el.className = 'cb-typing';
+      el.id = 'cb-typing-indicator';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      stream.appendChild(el);
+      stream.scrollTop = stream.scrollHeight;
+    };
+
+    const hideTyping = () => {
+      document.getElementById('cb-typing-indicator')?.remove();
+    };
+
+    const addChoices = (choices) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'cb-choices';
+      choices.forEach((c) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cb-choice';
+        btn.textContent = c.label;
+        btn.addEventListener('click', () => {
+          /* On retire les choix pour ne pas re-cliquer */
+          wrap.remove();
+          addUserMessage(c.label.replace(/^[^\w]+ /, ''));
+          if (c.next === 'goto-contact') {
+            setTimeout(() => { window.location.href = '/contact'; }, 400);
+            return;
+          }
+          renderStep(c.next);
+        });
+        wrap.appendChild(btn);
+      });
+      stream.appendChild(wrap);
+      stream.scrollTop = stream.scrollHeight;
+    };
+
+    const renderStep = (key) => {
+      const step = flow[key];
+      if (!step) return;
+      showTyping();
+      setTimeout(() => {
+        hideTyping();
+        addBotMessage(step.bot);
+        if (step.choices) setTimeout(() => addChoices(step.choices), 220);
+      }, 550);
+    };
+
+    toggle.addEventListener('click', () => (win.hidden ? open() : close()));
+    document.addEventListener('click', (e) => {
+      if (e.target instanceof HTMLElement && e.target.closest('[data-cb-close]')) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !win.hidden) close();
+    });
+  })();
+</script>

@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import CookieConsent from '../components/CookieConsent.astro';
+import ChatBot from '../components/ChatBot.astro';
 
 export interface Props {
   title: string;
@@ -147,6 +148,7 @@ const websiteSchema = {
   </head>
   <body>
     <slot />
+    <ChatBot />
     <CookieConsent />
   </body>
 </html>

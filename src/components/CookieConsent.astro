@@ -425,7 +425,8 @@
 </style>
 
 <script is:inline>
-  (() => {
+  /* Différé via requestIdleCallback pour ne pas dégrader le LCP. */
+  const __ccInit = () => {
     const STORAGE_KEY = 'cc_consent';
     const COOKIE_NAME = 'cookie_consent';
     const VERSION = '1.0';
@@ -545,8 +546,13 @@
 
     /* --- Première visite ou consentement expiré : afficher le bandeau --- */
     if (!readStored()) {
-      // Petit délai pour ne pas dégrader le LCP
       setTimeout(showBanner, 1200);
     }
-  })();
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(__ccInit, { timeout: 2000 });
+  } else {
+    setTimeout(__ccInit, 500);
+  }
 </script>
