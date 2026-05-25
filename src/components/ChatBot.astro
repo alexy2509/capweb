@@ -54,13 +54,30 @@
 
   <div id="cb-stream" class="cb-stream" role="log" aria-live="polite" aria-atomic="false"></div>
 
+  <form id="cb-form" class="cb-input" novalidate>
+    <input
+      type="text"
+      id="cb-input-text"
+      class="cb-input__field"
+      placeholder="Posez votre question…"
+      autocomplete="off"
+      maxlength="200"
+      aria-label="Votre question"
+    />
+    <button type="submit" class="cb-input__send" aria-label="Envoyer">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">
+        <path d="M4 12l16-8-6 16-3-7-7-1z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </form>
+
   <footer class="cb-footer">
     <a href="/contact" class="cb-footer__cta">Demander un devis gratuit</a>
     <p class="cb-footer__note">Bot automatique · réponses pré-écrites. Pour un échange personnalisé, contactez-nous.</p>
   </footer>
 </aside>
 
-<style>
+<style is:global>
   /* ---- Bouton flottant ---- */
   .cb-toggle {
     position: fixed;
@@ -280,34 +297,120 @@
     30%           { transform: translateY(-4px); opacity: 1; }
   }
 
-  /* ---- Boutons de choix ---- */
+  /* ---- Boutons de choix modernes ---- */
   .cb-choices {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    margin-top: 0.25rem;
+    gap: 0.45rem;
+    margin-top: 0.4rem;
+    align-self: stretch;
   }
 
   .cb-choice {
-    text-align: left;
-    padding: 0.55rem 0.85rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.8rem 0.7rem 0.95rem;
     background: white;
     color: var(--color-text);
     border: 1px solid var(--color-border);
-    border-radius: 999px;
-    font-size: 0.82rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
     font-family: inherit;
+    text-align: left;
     cursor: pointer;
-    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+    transition: border-color 0.25s ease, background-color 0.25s ease,
+                box-shadow 0.25s ease, transform 0.2s ease, padding-right 0.25s ease;
+  }
+
+  /* Trait dégradé vertical à gauche qui se révèle au hover */
+  .cb-choice::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gradient-primary);
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Flèche → à droite qui se révèle au hover */
+  .cb-choice::after {
+    content: '→';
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%) translateX(6px);
+    color: var(--color-primary);
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
   }
 
   .cb-choice:hover,
   .cb-choice:focus-visible {
-    border-color: var(--color-primary);
-    background: rgba(255, 107, 44, 0.06);
+    border-color: rgba(255, 107, 44, 0.5);
+    background: rgba(255, 107, 44, 0.04);
+    box-shadow: 0 4px 14px rgba(255, 107, 44, 0.12);
+    transform: translateY(-1px);
     outline: none;
-    transform: translateX(2px);
+    padding-right: 2.2rem;
   }
+
+  .cb-choice:hover::before,
+  .cb-choice:focus-visible::before { transform: scaleY(1); }
+
+  .cb-choice:hover::after,
+  .cb-choice:focus-visible::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  /* ---- Champ de saisie libre ---- */
+  .cb-input {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.65rem 0.6rem 0.85rem;
+    background: white;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cb-input__field {
+    flex: 1;
+    min-width: 0;
+    padding: 0.55rem 0.15rem;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.88rem;
+    color: var(--color-text);
+    outline: none;
+  }
+
+  .cb-input__field::placeholder { color: var(--color-text-muted); }
+
+  .cb-input__send {
+    flex-shrink: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: var(--color-text-light);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  }
+
+  .cb-input__send:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+  .cb-input__send:not(:disabled):hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255, 46, 126, 0.3); }
+  .cb-input__send svg { transform: translateX(-1px); }
 
   /* ---- Footer ---- */
   .cb-footer {
@@ -424,9 +527,37 @@
       },
     };
 
+    /* Mots-clés pour matcher une question libre vers un noeud du flow. */
+    const keywordsMap = [
+      { keys: ['tarif', 'prix', 'cout', 'coût', 'combien', 'budget', 'devis', 'euros', 'cher', 'gratuit'], step: 'tarifs' },
+      { keys: ['delai', 'délai', 'temps', 'duree', 'durée', 'rapide', 'quand', 'semaine', 'mois', 'rapidement'], step: 'delais' },
+      { keys: ['service', 'offre', 'prestation', 'vitrine', 'ecommerce', 'e-commerce', 'boutique', 'refonte', 'seo', 'referencement', 'référencement'], step: 'services' },
+      { keys: ['process', 'comment', 'etape', 'étape', 'deroulement', 'déroulement', 'travail', 'methode', 'méthode'], step: 'process' },
+      { keys: ['ou', 'où', 'adresse', 'localisation', 'quimper', 'bretagne', 'finistere', 'finistère', 'breton', 'situe', 'basé', 'basée'], step: 'localisation' },
+      { keys: ['contact', 'email', 'mail', 'telephone', 'téléphone', 'appeler', 'appel', 'humain', 'rendez-vous', 'rdv', 'parler', 'joindre'], step: 'contact' },
+    ];
+
+    /* Match strict par mot entier (évite "ou" → "vous", "site" → "site web"). */
+    const matchKeywords = (text) => {
+      const lower = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      const scores = keywordsMap.map(({ keys, step }) => ({
+        step,
+        score: keys.reduce((s, k) => {
+          const clean = k.normalize('NFD').replace(/[̀-ͯ]/g, '');
+          const re = new RegExp(`(?:^|[^a-z0-9])${clean.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:[^a-z0-9]|$)`, 'i');
+          return s + (re.test(lower) ? 1 : 0);
+        }, 0),
+      }));
+      scores.sort((a, b) => b.score - a.score);
+      return scores[0].score > 0 ? scores[0].step : null;
+    };
+
     const toggle = document.getElementById('cb-toggle');
     const win    = document.getElementById('cb-window');
     const stream = document.getElementById('cb-stream');
+    const form   = document.getElementById('cb-form');
+    const input  = document.getElementById('cb-input-text');
+    const sendBtn = form.querySelector('.cb-input__send');
 
     let opened = false;
 
@@ -521,6 +652,34 @@
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && !win.hidden) close();
+    });
+
+    /* ---- Saisie libre ---- */
+    const updateSendState = () => {
+      sendBtn.disabled = input.value.trim().length === 0;
+    };
+    input.addEventListener('input', updateSendState);
+    updateSendState();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = input.value.trim().slice(0, 200);
+      if (!text) return;
+      addUserMessage(text);
+      input.value = '';
+      updateSendState();
+      const match = matchKeywords(text);
+      if (match) {
+        renderStep(match);
+      } else {
+        /* Fallback : réponse polie + propose les sujets connus. */
+        showTyping();
+        setTimeout(() => {
+          hideTyping();
+          addBotMessage('Je n\'ai pas trouvé de réponse précise à votre question. Je peux vous orienter vers l\'un de ces sujets, ou vous mettre en relation avec un humain :');
+          setTimeout(() => addChoices(flow.start.choices), 220);
+        }, 650);
+      }
     });
   };
 
