@@ -235,12 +235,20 @@ const currentPath = Astro.url.pathname;
   const burger = document.getElementById('burger')!;
   const nav    = document.getElementById('nav')!;
 
-  /* Scroll → fond sombre */
+  /* Scroll → fond sombre. Lit window.scrollY de façon throttlée via rAF
+     pour éviter les forced reflows sur les pages longues. */
+  let scrollScheduled = false;
   const onScroll = () => {
-    header.classList.toggle('scrolled', window.scrollY > 40);
+    if (scrollScheduled) return;
+    scrollScheduled = true;
+    requestAnimationFrame(() => {
+      scrollScheduled = false;
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
   };
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  /* Check initial différé pour ne pas bloquer le rendu critique. */
+  requestAnimationFrame(onScroll);
 
   const setMenu = (open: boolean) => {
     burger.classList.toggle('is-open', open);

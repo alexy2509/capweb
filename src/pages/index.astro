@@ -159,15 +159,23 @@ const offers = [
               do { i = Math.floor(Math.random() * snippets.length); } while (i === last && snippets.length > 1);
               last = i;
               const [a, b, c] = snippets[i];
+              /* Restart de l'animation sans forced reflow : on retire la classe,
+                 puis on ré-ajoute après 2 frames (le navigateur regroupe les
+                 changements en un seul reflow asynchrone). */
               code.classList.remove('is-typing');
-              void code.offsetWidth;
-              lines[0].innerHTML = a;
-              lines[1].innerHTML = b;
-              lines[2].innerHTML = c;
-              code.classList.add('is-typing');
+              requestAnimationFrame(() => requestAnimationFrame(() => {
+                lines[0].innerHTML = a;
+                lines[1].innerHTML = b;
+                lines[2].innerHTML = c;
+                code.classList.add('is-typing');
+              }));
             };
 
-            const start = () => { if (interval) return; swap(); interval = setInterval(swap, 5400); };
+            const start = () => {
+              if (interval) return;
+              swap();
+              interval = setInterval(swap, 5400);
+            };
             const stop  = () => { if (interval) { clearInterval(interval); interval = null; } };
 
             const observer = new IntersectionObserver((entries) => {
