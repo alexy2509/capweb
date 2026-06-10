@@ -9,7 +9,7 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="header" id="header">
-  <div class="container header__inner">
+  <div class="header__bar">
     <a href="/" class="header__logo" aria-label="Accueil CapWeb">
       <picture>
         <source srcset="/logo.webp" type="image/webp" />
@@ -49,41 +49,73 @@ const currentPath = Astro.url.pathname;
 </header>
 
 <style>
+  /* ====== Conteneur flottant fixe ====== */
   .header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 100;
-    transition: background-color 0.4s ease, box-shadow 0.4s ease;
+    padding: 0.85rem var(--spacing-md);
+    transition: padding 0.35s ease;
   }
 
-  .header.scrolled,
-  .header.menu-open {
-    background-color: rgba(14, 6, 4, 0.96);
-    box-shadow: 0 2px 24px rgba(255, 78, 80, 0.15);
+  /* Resserre légèrement la barre quand on scrolle (effet "snap" iOS) */
+  .header.scrolled {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
-  /* Backdrop-filter coûteux : seulement sur desktop */
-  @media (min-width: 769px) {
-    .header.scrolled,
-    .header.menu-open {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-  }
-
-  .header__inner {
+  /* ====== Le "pill" en verre dépoli ====== */
+  .header__bar {
+    position: relative;
+    isolation: isolate;            /* contexte d'empilement propre, sans bloc englobant */
+    max-width: 1080px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 5rem;
-    position: relative;
-    z-index: 2;
+    height: 3.75rem;
+    padding: 0 0.6rem 0 1.4rem;
+    border-radius: 999px;
+  }
+
+  /* Le flou est porté par ::before : backdrop-filter sur .header__bar
+     créerait un bloc englobant qui casserait l'overlay mobile (position: fixed). */
+  .header__bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: rgba(18, 9, 6, 0.18);
+    backdrop-filter: blur(16px) saturate(170%);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    transition: background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    pointer-events: none;
+  }
+
+  /* Plus opaque au scroll / menu ouvert → texte clair lisible sur fond clair */
+  .header.scrolled .header__bar::before,
+  .header.menu-open .header__bar::before {
+    background: rgba(14, 7, 4, 0.52);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 14px 38px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
   }
 
   .header__logo img {
-    height: 36px;
+    height: 30px;
     width: auto;
     transition: opacity var(--transition);
   }
@@ -93,23 +125,23 @@ const currentPath = Astro.url.pathname;
   .header__nav {
     display: flex;
     align-items: center;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
   }
 
   .header__nav-list {
     display: flex;
     list-style: none;
-    gap: 2.5rem;
+    gap: 2.25rem;
     margin: 0;
     padding: 0;
   }
 
   .header__nav-link {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(255, 248, 242, 0.78);
+    color: rgba(255, 248, 242, 0.82);
     transition: color var(--transition);
     position: relative;
   }
@@ -117,7 +149,7 @@ const currentPath = Astro.url.pathname;
   .header__nav-link::after {
     content: '';
     position: absolute;
-    bottom: -4px;
+    bottom: -5px;
     left: 0;
     width: 0;
     height: 2px;
@@ -137,11 +169,11 @@ const currentPath = Astro.url.pathname;
   }
 
   .header__cta {
-    padding: 0.625rem 1.5rem;
-    font-size: 0.75rem;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.72rem;
   }
 
-  /* Burger */
+  /* ====== Burger ====== */
   .header__burger {
     display: none;
     flex-direction: column;
@@ -150,6 +182,7 @@ const currentPath = Astro.url.pathname;
     border: none;
     cursor: pointer;
     padding: 0.5rem;
+    margin-right: 0.4rem;
     z-index: 3;
   }
 
@@ -167,9 +200,18 @@ const currentPath = Astro.url.pathname;
   .header__burger.is-open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
   @media (max-width: 1024px) {
+    .header {
+      padding: 0.7rem 1rem;
+      padding-top: max(0.7rem, env(safe-area-inset-top));
+    }
+    .header.scrolled {
+      padding-top: max(0.5rem, env(safe-area-inset-top));
+      padding-bottom: 0.5rem;
+    }
+
     .header__burger { display: flex; }
 
-    /* Overlay plein écran sous l'en-tête */
+    /* Overlay plein écran */
     .header__nav {
       position: fixed;
       top: 0;
@@ -179,9 +221,9 @@ const currentPath = Astro.url.pathname;
       width: 100%;
       height: 100dvh;
       padding: 6rem 1.5rem 2.5rem;
-      background-color: rgba(14, 6, 4, 0.98);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      background-color: rgba(14, 6, 4, 0.92);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
@@ -228,6 +270,15 @@ const currentPath = Astro.url.pathname;
       font-size: 0.85rem;
     }
   }
+
+  /* Accessibilité : respecte la réduction des animations */
+  @media (prefers-reduced-motion: reduce) {
+    .header,
+    .header__bar::before,
+    .header__nav {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
@@ -235,7 +286,7 @@ const currentPath = Astro.url.pathname;
   const burger = document.getElementById('burger')!;
   const nav    = document.getElementById('nav')!;
 
-  /* Scroll → fond sombre. Lit window.scrollY de façon throttlée via rAF
+  /* Scroll → barre plus opaque. Lit window.scrollY de façon throttlée via rAF
      pour éviter les forced reflows sur les pages longues. */
   let scrollScheduled = false;
   const onScroll = () => {
