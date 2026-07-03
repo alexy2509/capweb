@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a1230" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Une question pour toi 💛</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <canvas id="particles-bg"></canvas>
+
+    <div id="app">
+      <nav id="progress" aria-label="Progression">
+        <button type="button" class="progress-back" id="progress-back">← Retour</button>
+        <div class="progress-track">
+          <span class="progress-plane" id="progress-plane">✈️</span>
+        </div>
+      </nav>
+
+      <!-- ÉTAPE 0 — HERO -->
+      <section id="step-hero" class="step hero">
+        <div class="envelope" id="hero-envelope">
+          <div class="envelope-body"></div>
+          <div class="envelope-flap"></div>
+        </div>
+        <h1 class="hero-title" id="hero-title"></h1>
+        <p class="hero-subtitle" id="hero-subtitle"></p>
+        <button type="button" class="btn btn-primary btn-open" id="hero-open-btn" style="opacity:0">Ouvrir</button>
+      </section>
+
+      <!-- ÉTAPE 1 — LIEU -->
+      <section id="step-lieu" class="step">
+        <header class="step-header">
+          <h2>Où veux-tu que je t'emmène ?</h2>
+          <p>Choisis le lieu qui te fait rêver</p>
+        </header>
+        <div class="step-body">
+          <div class="card-grid" id="lieu-grid"></div>
+          <p class="card-detail" id="lieu-detail"></p>
+        </div>
+        <footer class="step-footer">
+          <button type="button" class="btn btn-primary" id="lieu-continue" disabled>Continuer</button>
+        </footer>
+      </section>
+
+      <!-- ÉTAPE 2 — DATES -->
+      <section id="step-dates" class="step">
+        <header class="step-header">
+          <h2>Quand part-on ?</h2>
+          <p>Choisis une date de départ, puis de retour</p>
+        </header>
+        <div class="step-body">
+          <div class="calendar glass" id="dates-calendar"></div>
+          <p class="dates-summary" id="dates-summary"></p>
+        </div>
+        <footer class="step-footer">
+          <button type="button" class="btn btn-primary" id="dates-continue" disabled>Continuer</button>
+        </footer>
+      </section>
+
+      <!-- ÉTAPE 3 — ACTIVITÉS -->
+      <section id="step-activites" class="step">
+        <header class="step-header">
+          <h2>Qu'est-ce qui te fait rêver ?</h2>
+          <p>Choisis autant d'envies que tu veux</p>
+        </header>
+        <div class="step-body">
+          <div class="card-grid" id="activites-grid"></div>
+        </div>
+        <div class="panier glass" id="activites-panier">
+          <span class="panier-icon" id="panier-icon">🧳</span>
+          <span class="panier-count" id="panier-count">Aucune envie ajoutée</span>
+        </div>
+        <footer class="step-footer">
+          <button type="button" class="btn btn-primary" id="activites-continue" disabled>Continuer</button>
+        </footer>
+      </section>
+
+      <!-- ÉTAPE 4 — RÉCAP + LA QUESTION -->
+      <section id="step-recap" class="step">
+        <header class="step-header">
+          <h2>Ton voyage, en un coup d'œil</h2>
+        </header>
+        <div class="step-body">
+          <div class="boarding-pass glass-strong">
+            <div class="bp-row">
+              <div>
+                <div class="bp-label">Destination</div>
+                <div class="bp-value" id="recap-destination">—</div>
+              </div>
+            </div>
+            <div class="bp-row" style="margin-top: 1rem">
+              <div>
+                <div class="bp-label">Dates</div>
+                <div class="bp-value" id="recap-dates">—</div>
+              </div>
+            </div>
+            <div class="bp-activites" id="recap-activites"></div>
+            <div class="bp-stamp" id="recap-stamp">💛</div>
+          </div>
+
+          <div class="question-block">
+            <h2 id="recap-question"></h2>
+            <div class="question-actions" id="recap-actions">
+              <button type="button" class="btn btn-primary" id="recap-oui">Oui, mille fois oui 💛</button>
+              <button type="button" class="btn btn-ghost btn-non" id="recap-non">Hmm…</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÉTAPE 5 — FINAL -->
+      <section id="step-final" class="step final">
+        <h2 class="final-message" id="final-message"></h2>
+        <div class="final-recap glass" id="final-recap"></div>
+        <p class="final-countdown" id="final-countdown"></p>
+        <div class="final-links" id="final-links"></div>
+      </section>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

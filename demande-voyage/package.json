@@ -1,0 +1,18 @@
+{
+  "name": "demande-voyage",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.12.5",
+    "canvas-confetti": "^1.9.3"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
